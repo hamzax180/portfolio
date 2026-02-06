@@ -9,7 +9,13 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+// Health check endpoint
+app.get('/', (req, res) => {
+    res.status(200).send('OK');
+});
+
 // Proxy endpoint for Gemini API
+
 app.post('/api/chat', async (req, res) => {
     try {
         const apiKey = process.env.GEMINI_API_KEY;

@@ -37,49 +37,66 @@ graph TD
 - **Infrastructure**: Dockerized services orchestrated by Kubernetes for local development consistency.
 
 
-### 1. Set up the Environment
-Create a `.env` file inside the **`backend/`** folder:
-```env
-GEMINI_API_KEY=your_actual_key_here
-PORT=3000
-```
-
-### 2. Run the Backend Proxy
-```bash
-cd backend
-npm install
-node server.js
-```
-
-### 3. Serve the Frontend
-You can use any static server. For example:
-```bash
-npx serve frontend
-```
-Access at: `http://localhost:3000` (or whatever port `serve` uses).
-
 ## 🐳 Docker Setup
 
-To run the portfolio in a container:
+To run the portfolio in containers:
 
-1. **Build the image** (from the root):
+1. **Build Frontend**: `docker build -f infra/Dockerfile -t portfolio-frontend .`
+2. **Build Backend**: `docker build -t portfolio-backend ./backend`
+
+## ☸️ Kubernetes (Production-Grade)
+
+The production setup uses multiple replicas and dedicated deployments for the frontend and backend.
+
+1. **Configure Secrets**:
+   Update `infra/k8s-secrets.yaml` with your API key, then apply:
    ```bash
-   docker build -f infra/Dockerfile -t portfolio-app .
+   kubectl apply -f infra/k8s-secrets.yaml
    ```
 
-2. **Run the container**:
+2. **Deploy Components**:
    ```bash
-   docker run -d -p 8080:80 --name portfolio portfolio-app
+   kubectl apply -f infra/k8s-backend.yaml
+   kubectl apply -f infra/k8s-frontend.yaml
    ```
 
-## ☸️ Kubernetes (Local)
+3. **Verify Status**:
+   ```bash
+   kubectl get pods -l 'app in (portfolio-frontend, portfolio-backend)'
+   ```
 
-Deploy using the manifests in the `infra/` folder:
-```bash
-kubectl apply -f infra/k8s-deployment.yaml
-kubectl apply -f infra/k8s-service.yaml
+## 🏗️ Architecture (Scaling)
+
+```mermaid
+graph TD
+    User([User's Browser])
+    
+    subgraph "Kubernetes Cluster"
+        subgraph "Frontend Service (NodePort: 30080)"
+            F1[Pod Ref: 1]
+            F2[Pod Ref: 2]
+            F3[Pod Ref: 3]
+        end
+        
+        subgraph "Backend Service (ClusterIP)"
+            B1[Pod Proxy: 1]
+            B2[Pod Proxy: 2]
+        end
+        
+        Secret[(K8s Secrets)]
+    end
+    
+    Gemini[Google Gemini API]
+    
+    User -->|Port 30080| F1 & F2 & F3
+    F1 & F2 & F3 -.->|API Call| B1 & B2
+    B1 & B2 --> Secret
+    B1 & B2 --> Gemini
 ```
 
-## 🔐 Security
+### Production Features:
+- **Replicas**: 3x Frontend and 2x Backend pods for failover.
+- **Resource Limits**: Prevents containers from consuming too much memory/CPU.
+- **Health Probes**: Auto-restarts pods if they become unresponsive.
+- **Native Secrets**: API keys are managed by Kubernetes Secrets, not text files.
 
-The Gemini API key is now **hidden** from the user. The frontend talks to your local `backend/server.js`, which then talks to Google using the key stored in `.env`.

@@ -227,6 +227,7 @@ REMEMBER: Be brief! Fast conversation!`;
                 signal: controller.signal
             });
 
+
             clearTimeout(timeoutId);
 
             if (!response.ok) {
