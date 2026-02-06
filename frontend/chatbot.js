@@ -77,6 +77,8 @@ REMEMBER: Be brief! Fast conversation!`;
         this.isOpen = !this.isOpen;
         this.widget.classList.toggle('open', this.isOpen);
 
+        if (window.techAudio) window.techAudio.play('whoosh');
+
         if (this.isOpen) {
             setTimeout(() => this.input.focus(), 300);
         }
@@ -141,6 +143,8 @@ REMEMBER: Be brief! Fast conversation!`;
     async sendMessage(speakResponse = false) {
         const text = this.input.value.trim();
         if (!text) return;
+
+        if (window.techAudio) window.techAudio.play('beep');
 
         // Add user message
         this.appendMessage('user', text);
