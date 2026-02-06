@@ -32,7 +32,7 @@ class HamzaChatbot {
         this.setupSpeechRecognition();
 
         // Hamza's comprehensive knowledge base for AI training
-        this.systemPrompt = `You are Hamza Al-Ahdal's personal AI assistant. You're smart, friendly, and chat like someone on a phone call. 
+        this.systemPrompt = `You are Hamza AI Assistant. You're smart, friendly, and chat like someone on a phone call. 
 
 ## CONVERSATION STYLE
 - Keep responses EXTREMELY SHORT (1-2 sentences max). This is a fast-paced phone call.
