@@ -9,7 +9,33 @@ Modern AI-powered portfolio website featuring a responsive design and an interac
 - **`infra/`**: Docker and Kubernetes configuration files.
 - **`assets/`**: High-quality downloadable assets (e.g., CV PDF).
 
-## 🚀 Getting Started
+## 🏗️ Architecture
+
+The application is built using a modern, containerized architecture that separates concerns for security and scalability.
+
+```mermaid
+graph TD
+    User([User's Browser])
+    
+    subgraph "Local Dev / Kubernetes"
+        FE[Frontend Container - Nginx]
+        BE[Backend Proxy - Node.js]
+        ENV[.env Secret]
+    end
+    
+    Gemini[Google Gemini API]
+    
+    User --> FE
+    FE --> BE
+    BE --> ENV
+    BE --> Gemini
+```
+
+### Component Details:
+- **Frontend**: A lightweight Nginx container serving static assets from the `frontend/` directory.
+- **Backend Proxy**: A Node.js Express server that handles AI requests to keep the `GEMINI_API_KEY` hidden from the client browser.
+- **Infrastructure**: Dockerized services orchestrated by Kubernetes for local development consistency.
+
 
 ### 1. Set up the Environment
 Create a `.env` file inside the **`backend/`** folder:
