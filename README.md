@@ -2,12 +2,13 @@
 
 Modern AI-powered portfolio website featuring a responsive design and an interactive Gemini-powered chatbot with voice capabilities.
 
-## � Project Structure
+## 📂 Project Structure
 
 - **`frontend/`**: The client-side application (HTML, CSS, JS).
 - **`backend/`**: Node.js Express server that proxies API requests to Gemini (keeps your API key safe).
 - **`infra/`**: Docker and Kubernetes configuration files.
 - **`assets/`**: High-quality downloadable assets (e.g., CV PDF).
+- **`api/`**: Vercel Serverless Functions for cloud-native deployment.
 
 ## 🏗️ Architecture
 
@@ -17,10 +18,10 @@ The application is built using a modern, containerized architecture that separat
 graph TD
     User([User's Browser])
     
-    subgraph "Local Dev / Kubernetes"
-        FE[Frontend Container - Nginx]
-        BE[Backend Proxy - Node.js]
-        ENV[.env Secret]
+    subgraph "Cloud / Kubernetes"
+        FE[Frontend - Static/Nginx]
+        BE[Backend Proxy - Node.js/Serverless]
+        ENV[Secrets/Environment]
     end
     
     Gemini[Google Gemini API]
@@ -32,10 +33,16 @@ graph TD
 ```
 
 ### Component Details:
-- **Frontend**: A lightweight Nginx container serving static assets from the `frontend/` directory.
-- **Backend Proxy**: A Node.js Express server that handles AI requests to keep the `GEMINI_API_KEY` hidden from the client browser.
-- **Infrastructure**: Dockerized services orchestrated by Kubernetes for local development consistency.
+- **Frontend**: A lightweight Nginx container or static Vercel host.
+- **Backend Proxy**: A Node.js Express server or Vercel Serverless Function.
+- **Infrastructure**: Dockerized services orchestrated by Kubernetes or Vercel's global edge network.
 
+## ☁️ Vercel Deployment (Native)
+
+This project is optimized for Vercel using **Serverless Functions**.
+
+1. **Deploy**: `npx vercel --prod`
+2. **Environment Variable**: Add `GEMINI_API_KEY` in Vercel Dashboard.
 
 ## 🐳 Docker Setup
 
@@ -99,4 +106,3 @@ graph TD
 - **Resource Limits**: Prevents containers from consuming too much memory/CPU.
 - **Health Probes**: Auto-restarts pods if they become unresponsive.
 - **Native Secrets**: API keys are managed by Kubernetes Secrets, not text files.
-
