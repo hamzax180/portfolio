@@ -73,11 +73,55 @@ REMEMBER: Be brief! Fast conversation!`;
         }
     }
 
+    // --- Audio Synthesis ---
+    initAudio() {
+        if (this.audioCtx) return;
+        try {
+            this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            console.log("🤖 Hamza AI: Audio Activated");
+        } catch (e) {
+            console.error("Audio failed:", e);
+        }
+    }
+
+    setupAudioTriggers() {
+        ['mousedown', 'click', 'keydown', 'touchstart'].forEach(evt => {
+            window.addEventListener(evt, () => this.initAudio(), { once: true });
+        });
+    }
+
+    playTechSound(name) {
+        if (!this.audioCtx) return;
+        if (this.audioCtx.state === 'suspended') this.audioCtx.resume();
+
+        const s = this.sounds[name];
+        if (!s) return;
+
+        const now = this.audioCtx.currentTime;
+        const osc = this.audioCtx.createOscillator();
+        const gain = this.audioCtx.createGain();
+
+        osc.type = s.type;
+        osc.frequency.setValueAtTime(s.freq, now);
+        if (s.sweep) {
+            osc.frequency.exponentialRampToValueAtTime(s.freq * 4, now + s.duration);
+        }
+
+        gain.gain.setValueAtTime(s.vol, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + s.duration);
+
+        osc.connect(gain);
+        gain.connect(this.audioCtx.destination);
+
+        osc.start(now);
+        osc.stop(now + s.duration);
+    }
+
     toggleChat() {
         this.isOpen = !this.isOpen;
         this.widget.classList.toggle('open', this.isOpen);
 
-        if (window.techAudio) window.techAudio.play('whoosh');
+        this.playTechSound('whoosh');
 
         if (this.isOpen) {
             setTimeout(() => this.input.focus(), 300);
@@ -144,7 +188,7 @@ REMEMBER: Be brief! Fast conversation!`;
         const text = this.input.value.trim();
         if (!text) return;
 
-        if (window.techAudio) window.techAudio.play('beep');
+        this.playTechSound('beep');
 
         // Add user message
         this.appendMessage('user', text);

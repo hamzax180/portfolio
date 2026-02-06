@@ -6,6 +6,10 @@
             "destination": "/api/$1"
         },
         {
+            "source": "/audio.js",
+            "destination": "/backend/audio.js"
+        },
+        {
             "source": "/",
             "destination": "/frontend/frontend.html"
         },
