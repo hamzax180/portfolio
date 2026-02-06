@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Hamza Al-Ahdal - AI & Full-Stack Developer Portfolio. Computer Science student specializing in AI/ML and web development.">
+    <meta name="keywords" content="Hamza Al-Ahdal, Developer, AI, Machine Learning, Full-Stack, Portfolio">
+    <title>Hamza Al-Ahdal | AI & Full-Stack Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Particle Background -->
+    <canvas id="particles"></canvas>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <span class="logo-text">H</span>amza
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="hero-badge animate-on-scroll">
+                <span class="pulse"></span>
+                Available for opportunities
+            </div>
+            <h1 class="hero-title animate-on-scroll">
+                <span class="greeting">Hello, I'm</span>
+                <span class="name glitch" data-text="Hamza Al-Ahdal">Hamza Al-Ahdal</span>
+            </h1>
+            <p class="hero-subtitle animate-on-scroll">
+                <span class="typewriter" id="typewriter"></span>
+            </p>
+            <p class="hero-description animate-on-scroll">
+                Motivated Computer Science student with a strong foundation in
+                <span class="highlight">software engineering</span> and
+                <span class="highlight">AI</span>. Skilled in developing full-stack applications
+                and integrating advanced AI models.
+            </p>
+            <div class="hero-cta animate-on-scroll">
+                <a href="#projects" class="btn btn-primary">
+                    <span>View Projects</span>
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </a>
+                <a href="#contact" class="btn btn-secondary">
+                    <span>Get in Touch</span>
+                </a>
+            </div>
+            <div class="hero-stats animate-on-scroll">
+                <div class="stat">
+                    <span class="stat-number" data-target="3">0</span>+
+                    <span class="stat-label">Projects</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number" data-target="4">0</span>+
+                    <span class="stat-label">Technologies</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number" data-target="99">0</span>%
+                    <span class="stat-label">AI Accuracy</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="orbit-container">
+                <div class="orbit orbit-1"></div>
+                <div class="orbit orbit-2"></div>
+                <div class="orbit orbit-3"></div>
+                <div class="core"></div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll">
+                <span class="title-number">01.</span>
+                About Me
+            </h2>
+            <div class="about-content">
+                <div class="about-text animate-on-scroll">
+                    <div class="glass-card">
+                        <h3>Who I Am</h3>
+                        <p>
+                            I'm a <span class="highlight">Computer Science student</span> at
+                            <strong>Altinbas University</strong> in Istanbul, Türkiye,
+                            expected to graduate in <strong>June 2026</strong>.
+                        </p>
+                        <p>
+                            My passion lies in creating intelligent solutions that bridge the gap
+                            between complex AI models and user-friendly applications. I specialize in
+                            <span class="highlight">RAG systems</span>,
+                            <span class="highlight">NLP</span>,
+                            <span class="highlight">Full-Stack Development</span>, and
+                            <span class="highlight">Docker & Kubernetes</span>.
+                        </p>
+                        <p>
+                            Currently seeking internship or full-time opportunities to apply technical expertise,
+                            contribute to innovative projects, and gain practical industry experience.
+                        </p>
+                        <div class="about-tags">
+                            <span class="tag">AI/ML Enthusiast</span>
+                            <span class="tag">Full-Stack Developer</span>
+                            <span class="tag">DevOps</span>
+                            <span class="tag">Problem Solver</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-education animate-on-scroll">
+                    <div class="glass-card">
+                        <h3>Education</h3>
+                        <div class="education-item">
+                            <div class="education-icon">🎓</div>
+                            <div class="education-details">
+                                <h4>Bachelor's in Computer Science</h4>
+                                <p class="school">Altinbas University</p>
+                                <p class="location">Istanbul, Türkiye</p>
+                                <p class="date">Expected: June 2026</p>
+                            </div>
+                        </div>
+                        <div class="coursework">
+                            <h4>Relevant Coursework</h4>
+                            <ul>
+                                <li>Data Structures and Algorithms</li>
+                                <li>Object-Oriented Programming</li>
+                                <li>Databases</li>
+                                <li>Software Engineering</li>
+                                <li>Machine Learning</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll">
+                <span class="title-number">02.</span>
+                Featured Projects
+            </h2>
+            <div class="projects-grid">
+                <!-- Project 1: RAG AI Chatbot -->
+                <div class="project-card animate-on-scroll">
+                    <div class="project-glow"></div>
+                    <div class="project-header">
+                        <div class="project-icon">🤖</div>
+                        <div class="project-links">
+                            <a href="#" class="project-link" aria-label="View Source">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path
+                                        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <h3 class="project-title">RAG AI Chatbot</h3>
+                    <p class="project-description">
+                        Built an AI-powered tool delivering context-aware summaries and
+                        AI-generated answers with up to <span class="highlight">99% accuracy</span>.
+                    </p>
+                    <div class="project-tech">
+                        <span>Python</span>
+                        <span>Streamlit</span>
+                        <span>Gemini</span>
+                        <span>FAISS</span>
+                        <span>NumPy</span>
+                    </div>
+                </div>
+
+                <!-- Project 2: Alhadaf Level -->
+                <a href="https://alhadaf-level-demo.vercel.app" target="_blank" rel="noopener"
+                    class="project-card-link">
+                    <div class="project-card animate-on-scroll">
+                        <div class="project-glow"></div>
+                        <div class="project-header">
+                            <div class="project-icon">🌱</div>
+                            <div class="project-links">
+                                <span class="project-link" aria-label="View Source"
+                                    onclick="event.preventDefault(); event.stopPropagation(); window.open('https://github.com/hamzax180/alhadaf-level-demo', '_blank');">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                                    </svg>
+                                </span>
+                                <span class="project-link" aria-label="Live Demo">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                                        <polyline points="15 3 21 3 21 9" />
+                                        <line x1="10" y1="14" x2="21" y2="3" />
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                        <h3 class="project-title">Alhadaf Level</h3>
+                        <p class="project-description">
+                            Modern bilingual e-commerce for agriculture. Features shopping cart, AI assistant,
+                            <span class="highlight">RTL/LTR Arabic/English</span> support.
+                        </p>
+                        <div class="project-tech">
+                            <span>Next.js 14</span>
+                            <span>Express</span>
+                            <span>PostgreSQL</span>
+                            <span>Prisma</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Project 3: La Liga Hub -->
+                <a href="https://laliga-hub.vercel.app" target="_blank" rel="noopener" class="project-card-link">
+                    <div class="project-card animate-on-scroll">
+                        <div class="project-glow"></div>
+                        <div class="project-header">
+                            <div class="project-icon">⚽</div>
+                            <div class="project-links">
+                                <span class="project-link" aria-label="View Source"
+                                    onclick="event.preventDefault(); window.open('https://github.com/hamzax180/laliga-hub', '_blank');">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                                    </svg>
+                                </span>
+                                <span class="project-link" aria-label="Live Demo">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                                        <polyline points="15 3 21 3 21 9" />
+                                        <line x1="10" y1="14" x2="21" y2="3" />
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                        <h3 class="project-title">La Liga Hub</h3>
+                        <p class="project-description">
+                            A stunning La Liga football hub with live standings, top scorers, and season stats.
+                            <span class="highlight">Containerized with Docker</span> and production-ready for
+                            Kubernetes.
+                        </p>
+                        <div class="project-tech">
+                            <span>Node.js</span>
+                            <span>Docker</span>
+                            <span>Kubernetes</span>
+                            <span>HTML/CSS/JS</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll">
+                <span class="title-number">03.</span>
+                Technical Skills
+            </h2>
+            <div class="skills-grid">
+                <!-- Programming Languages -->
+                <div class="skill-category animate-on-scroll">
+                    <div class="glass-card">
+                        <div class="skill-icon">💻</div>
+                        <h3>Languages</h3>
+                        <div class="skill-items">
+                            <div class="skill-item">
+                                <span class="skill-name">Python</span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-progress="90"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <span class="skill-name">JavaScript</span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-progress="85"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <span class="skill-name">Java</span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-progress="80"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <span class="skill-name">SQL</span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-progress="75"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Databases -->
+                <div class="skill-category animate-on-scroll">
+                    <div class="glass-card">
+                        <div class="skill-icon">🗄️</div>
+                        <h3>Databases</h3>
+                        <div class="skill-items">
+                            <div class="skill-item">
+                                <span class="skill-name">MongoDB</span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-progress="85"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <span class="skill-name">MySQL</span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-progress="80"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <span class="skill-name">PostgreSQL</span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-progress="75"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Frameworks -->
+                <div class="skill-category animate-on-scroll">
+                    <div class="glass-card">
+                        <div class="skill-icon">⚡</div>
+                        <h3>Frameworks</h3>
+                        <div class="skill-items">
+                            <div class="skill-item">
+                                <span class="skill-name">Node.js</span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-progress="85"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <span class="skill-name">Express.js</span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-progress="80"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <span class="skill-name">Streamlit</span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-progress="90"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DevOps & Tools -->
+                <div class="skill-category animate-on-scroll">
+                    <div class="glass-card">
+                        <div class="skill-icon">🛠️</div>
+                        <h3>DevOps & Tools</h3>
+                        <div class="skill-items">
+                            <div class="skill-item">
+                                <span class="skill-name">Git</span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-progress="90"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <span class="skill-name">Docker</span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-progress="75"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <span class="skill-name">Kubernetes</span>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-progress="65"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll">
+                <span class="title-number">04.</span>
+                Get In Touch
+            </h2>
+            <div class="contact-content">
+                <div class="contact-text animate-on-scroll">
+                    <h3>Let's Build Something Amazing</h3>
+                    <p>
+                        I'm currently looking for internship opportunities and exciting projects.
+                        Whether you have a question or just want to say hi, I'll try my best to get back to you!
+                    </p>
+                </div>
+                <div class="contact-methods animate-on-scroll">
+                    <a href="mailto:hamza1tot@gmail.com" class="contact-card glass-card">
+                        <div class="contact-icon">📧</div>
+                        <div class="contact-info">
+                            <span class="contact-label">Email</span>
+                            <span class="contact-value">hamza1tot@gmail.com</span>
+                        </div>
+                    </a>
+                    <a href="tel:+905364292064" class="contact-card glass-card">
+                        <div class="contact-icon">📱</div>
+                        <div class="contact-info">
+                            <span class="contact-label">Phone</span>
+                            <span class="contact-value">+90 536 429 2064</span>
+                        </div>
+                    </a>
+                    <a href="https://linkedin.com/in/hamzahdal" target="_blank" rel="noopener"
+                        class="contact-card glass-card">
+                        <div class="contact-icon">💼</div>
+                        <div class="contact-info">
+                            <span class="contact-label">LinkedIn</span>
+                            <span class="contact-value">linkedin.com/in/hamzahdal</span>
+                        </div>
+                    </a>
+                    <div class="contact-card glass-card">
+                        <div class="contact-icon">📍</div>
+                        <div class="contact-info">
+                            <span class="contact-label">Location</span>
+                            <span class="contact-value">Istanbul, Türkiye</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>Designed & Built by <a href="https://linkedin.com/in/hamzahdal" target="_blank" rel="noopener"
+                    class="highlight footer-link">Hamza Al-Ahdal</a></p>
+            <p class="footer-year">© 2026</p>
+        </div>
+    </footer>
+
+    <!-- Chat Widget -->
+    <div id="chatWidget" class="chat-widget">
+        <button id="chatToggle" class="chat-toggle" aria-label="Chat with AI Assistant">
+            <svg class="chat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>
+            <svg class="close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+            <span class="chat-pulse"></span>
+        </button>
+        <div id="chatWindow" class="chat-window">
+            <div class="chat-header">
+                <div class="chat-avatar" id="robotAvatar">
+                    <div class="robot-face">
+                        <div class="robot-eyes">
+                            <div class="robot-eye left"></div>
+                            <div class="robot-eye right"></div>
+                        </div>
+                        <div class="robot-mouth"></div>
+                    </div>
+                </div>
+                <div class="chat-header-info">
+                    <h4>Hamza's AI Assistant</h4>
+                    <span class="chat-status">
+                        <span class="status-dot"></span>
+                        Online
+                    </span>
+                </div>
+            </div>
+            <div id="chatMessages" class="chat-messages">
+                <!-- Messages will be injected here -->
+            </div>
+            <div id="voiceStatus" class="voice-status">🎤 Listening...</div>
+            <div class="chat-input-container">
+                <button id="chatMic" class="chat-mic" aria-label="Voice input">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                        <line x1="12" y1="19" x2="12" y2="23" />
+                        <line x1="8" y1="23" x2="16" y2="23" />
+                    </svg>
+                </button>
+                <input type="text" id="chatInput" class="chat-input" placeholder="Ask me anything about Hamza...">
+                <button id="chatSend" class="chat-send" aria-label="Send message">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="functions.js"></script>
+    <script src="chatbot.js"></script>
+</body>
+
+</html>
