@@ -19,16 +19,17 @@ class HamzaChatbot {
         this.isRecording = false;
         this.conversationHistory = [];
 
+        // Futuristic Audio Controller
+        this.audioCtx = null;
+        this.sounds = {
+            whoosh: { freq: 150, type: 'sawtooth', duration: 0.4, vol: 0.15, sweep: true },
+            beep: { freq: 1200, type: 'triangle', duration: 0.15, vol: 0.2 },
+            think: { freq: 440, type: 'sine', duration: 0.1, vol: 0.05 }
+        };
+
         console.log('Chatbot initializing...');
 
-        // Speech Recognition setup
-        this.recognition = null;
-        this.synthesis = window.speechSynthesis;
-        this.setupSpeechRecognition();
-
-        // Speech Recognition setup
-        this.recognition = null;
-        this.synthesis = window.speechSynthesis;
+        this.setupAudioTriggers();
         this.setupSpeechRecognition();
 
         // Hamza's comprehensive knowledge base for AI training
