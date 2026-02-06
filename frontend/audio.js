@@ -6,63 +6,85 @@
 class TechAudio {
     constructor() {
         this.ctx = null;
-        this.enabled = false;
+        this.enabled = true; // Enabled by default, constrained by browser policy
 
         // Interaction sounds
         this.sounds = {
-            hover: { freq: 880, type: 'sine', duration: 0.1, volume: 0.05 },
-            click: { freq: 440, type: 'square', duration: 0.05, volume: 0.1 },
-            beep: { freq: 1200, type: 'triangle', duration: 0.2, volume: 0.08 },
-            whoosh: { freq: 200, type: 'sawtooth', duration: 0.3, volume: 0.05, sweep: true }
+            hover: { freq: 880, type: 'sine', duration: 0.1, volume: 0.1 },
+            click: { freq: 440, type: 'square', duration: 0.08, volume: 0.15 },
+            beep: { freq: 1200, type: 'triangle', duration: 0.15, volume: 0.12 },
+            whoosh: { freq: 150, type: 'sawtooth', duration: 0.4, volume: 0.1, sweep: true },
+            startup: { freq: 600, type: 'sine', duration: 0.5, volume: 0.1, arpeggio: true }
         };
     }
 
-    init() {
-        if (this.ctx) return;
-        this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-        this.enabled = true;
-        console.log("🤖 Tech Audio Initialized");
+    async init() {
+        if (this.ctx) {
+            if (this.ctx.state === 'suspended') {
+                await this.ctx.resume();
+            }
+            return;
+        }
+
+        try {
+            this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+            if (this.ctx.state === 'suspended') {
+                await this.ctx.resume();
+            }
+            console.log("🤖 Tech Audio Activated");
+        } catch (e) {
+            console.warn("Audio Context failed:", e);
+        }
     }
 
-    play(name) {
-        if (!this.ctx || !this.enabled) return;
-        if (this.ctx.state === 'suspended') {
-            this.ctx.resume();
+    async play(name) {
+        // Auto-init on play if possible
+        if (!this.ctx) await this.init();
+        if (!this.ctx || this.ctx.state === 'suspended') {
+            await this.ctx.resume();
         }
 
         const sound = this.sounds[name];
         if (!sound) return;
 
+        const now = this.ctx.currentTime;
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         const filter = this.ctx.createBiquadFilter();
 
         osc.type = sound.type;
-        osc.frequency.setValueAtTime(sound.freq, this.ctx.currentTime);
 
-        if (sound.sweep) {
-            osc.frequency.exponentialRampToValueAtTime(sound.freq * 2, this.ctx.currentTime + sound.duration);
+        if (sound.arpeggio) {
+            osc.frequency.setValueAtTime(sound.freq, now);
+            osc.frequency.exponentialRampToValueAtTime(sound.freq * 1.5, now + sound.duration * 0.5);
+            osc.frequency.exponentialRampToValueAtTime(sound.freq * 2, now + sound.duration);
+        } else {
+            osc.frequency.setValueAtTime(sound.freq, now);
+            if (sound.sweep) {
+                osc.frequency.exponentialRampToValueAtTime(sound.freq * 3, now + sound.duration);
+            }
         }
 
         filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(2000, this.ctx.currentTime);
-        filter.frequency.exponentialRampToValueAtTime(100, this.ctx.currentTime + sound.duration);
+        filter.frequency.setValueAtTime(3000, now);
+        filter.frequency.exponentialRampToValueAtTime(500, now + sound.duration);
 
-        gain.gain.setValueAtTime(sound.volume, this.ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + sound.duration);
+        gain.gain.setValueAtTime(sound.volume, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + sound.duration);
 
         osc.connect(filter);
         filter.connect(gain);
         gain.connect(this.ctx.destination);
 
-        osc.start();
-        osc.stop(this.ctx.currentTime + sound.duration);
+        osc.start(now);
+        osc.stop(now + sound.duration);
     }
 }
 
 // Global instance
 window.techAudio = new TechAudio();
 
-// Initialize on first user interaction
-window.addEventListener('mousedown', () => window.techAudio.init(), { once: true });
-window.addEventListener('keydown', () => window.techAudio.init(), { once: true });
+// Multiple triggers to bypass browser autoplay restrictions
+['mousedown', 'touchstart', 'keydown', 'click'].forEach(evt => {
+    window.addEventListener(evt, () => window.techAudio.init(), { once: true });
+});
