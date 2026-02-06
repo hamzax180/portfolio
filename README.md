@@ -1,4 +1,4 @@
-# Hamza Al-Ahdal Portfolio 🚀
+# Hamza Al-Ahdal Portfolio 🤖
 
 Modern AI-powered portfolio website featuring a responsive design and an interactive Gemini-powered chatbot with voice capabilities.
 
