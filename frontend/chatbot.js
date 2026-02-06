@@ -217,8 +217,8 @@ REMEMBER: Be brief! Fast conversation!`;
         const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
 
         try {
-            // Using relative URL to point to the local backend proxy
-            const response = await fetch('http://localhost:3000/api/chat', {
+            // Using relative URL for Vercel Serverless Function support
+            const response = await fetch('/api/chat', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
