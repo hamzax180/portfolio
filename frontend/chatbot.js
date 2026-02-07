@@ -19,17 +19,8 @@ class HamzaChatbot {
         this.isRecording = false;
         this.conversationHistory = [];
 
-        // Futuristic Audio Controller
-        this.audioCtx = null;
-        this.sounds = {
-            whoosh: { freq: 150, type: 'sawtooth', duration: 0.4, vol: 0.15, sweep: true },
-            beep: { freq: 1200, type: 'triangle', duration: 0.15, vol: 0.2 },
-            think: { freq: 440, type: 'sine', duration: 0.1, vol: 0.05 }
-        };
-
         console.log('Chatbot initializing...');
 
-        this.setupAudioTriggers();
         this.setupSpeechRecognition();
 
         // Hamza's comprehensive knowledge base for AI training
@@ -74,55 +65,11 @@ REMEMBER: Be brief! Fast conversation!`;
         }
     }
 
-    // --- Audio Synthesis ---
-    initAudio() {
-        if (this.audioCtx) return;
-        try {
-            this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            console.log("🤖 Hamza AI: Audio Activated");
-        } catch (e) {
-            console.error("Audio failed:", e);
-        }
-    }
-
-    setupAudioTriggers() {
-        ['mousedown', 'click', 'keydown', 'touchstart'].forEach(evt => {
-            window.addEventListener(evt, () => this.initAudio(), { once: true });
-        });
-    }
-
-    playTechSound(name) {
-        if (!this.audioCtx) return;
-        if (this.audioCtx.state === 'suspended') this.audioCtx.resume();
-
-        const s = this.sounds[name];
-        if (!s) return;
-
-        const now = this.audioCtx.currentTime;
-        const osc = this.audioCtx.createOscillator();
-        const gain = this.audioCtx.createGain();
-
-        osc.type = s.type;
-        osc.frequency.setValueAtTime(s.freq, now);
-        if (s.sweep) {
-            osc.frequency.exponentialRampToValueAtTime(s.freq * 4, now + s.duration);
-        }
-
-        gain.gain.setValueAtTime(s.vol, now);
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + s.duration);
-
-        osc.connect(gain);
-        gain.connect(this.audioCtx.destination);
-
-        osc.start(now);
-        osc.stop(now + s.duration);
-    }
-
     toggleChat() {
         this.isOpen = !this.isOpen;
         this.widget.classList.toggle('open', this.isOpen);
 
-        this.playTechSound('whoosh');
+        if (window.techAudio) window.techAudio.play('whoosh');
 
         if (this.isOpen) {
             setTimeout(() => this.input.focus(), 300);
@@ -189,7 +136,7 @@ REMEMBER: Be brief! Fast conversation!`;
         const text = this.input.value.trim();
         if (!text) return;
 
-        this.playTechSound('beep');
+        if (window.techAudio) window.techAudio.play('beep');
 
         // Add user message
         this.appendMessage('user', text);
