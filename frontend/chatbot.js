@@ -235,6 +235,11 @@ REMEMBER: Be brief! Fast conversation!`;
 
             const data = await response.json();
 
+            if (data.error && data.details) {
+                console.error('AI Gateway Detailed Error:', data.details);
+                throw new Error(data.details.message || data.details.error || 'Gateway Error');
+            }
+
             if (data.candidates && data.candidates[0] && data.candidates[0].content) {
                 return data.candidates[0].content.parts[0].text;
             }

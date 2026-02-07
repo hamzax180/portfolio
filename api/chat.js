@@ -20,7 +20,12 @@ export default async function handler(req, res) {
             temperature: 0.7
         };
 
-        console.log('Vercel Function: Proxying request to AI Gateway...');
+        console.log('Vercel Function: Proxying request to AI Gateway...', {
+            url: url,
+            model: requestBody.model,
+            hasKey: !!apiKey
+        });
+
         const response = await axios.post(url, requestBody, {
             headers: {
                 'Content-Type': 'application/json',
