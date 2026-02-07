@@ -23,10 +23,14 @@ module.exports = async (req, res) => {
             return res.status(500).json({ error: 'GEMINI_API_KEY is not configured on the server.' });
         }
 
-        console.log('Gemini Request Received. API Key present (length):', apiKey.length);
+        console.log('Gemini Request Received. API Key length:', apiKey.length);
+
+        const { contents, generationConfig, system_instruction } = req.body;
 
         const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({
+
+        // System instruction goes in model initialization, not generateContent
+        const modelConfig = {
             model: 'gemini-1.5-flash',
             safetySettings: [
                 { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
@@ -34,21 +38,27 @@ module.exports = async (req, res) => {
                 { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },
                 { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' }
             ]
-        });
+        };
 
-        const { contents, generationConfig, system_instruction } = req.body;
+        // Add system instruction to model config if provided
+        if (system_instruction && system_instruction.parts && system_instruction.parts[0]) {
+            modelConfig.systemInstruction = system_instruction.parts[0].text;
+        }
+
+        const model = genAI.getGenerativeModel(modelConfig);
 
         console.log('Sending to Gemini SDK...');
+
+        // Generate content with just contents and generationConfig
         const result = await model.generateContent({
             contents: contents || [],
-            generationConfig: generationConfig || {},
-            systemInstruction: system_instruction || undefined
+            generationConfig: generationConfig || {}
         });
 
         const response = await result.response;
         const text = response.text();
 
-        console.log('Gemini Response Success');
+        console.log('Gemini Response Success, length:', text.length);
         return res.status(200).json({
             candidates: [{
                 content: {
@@ -57,10 +67,11 @@ module.exports = async (req, res) => {
             }]
         });
     } catch (error) {
-        console.error('GEMINI SDK CRITICAL ERROR:', error);
+        console.error('GEMINI SDK CRITICAL ERROR:', error.message);
+        console.error('Full error:', JSON.stringify(error, null, 2));
         return res.status(500).json({
             error: error.message,
-            stack: error.stack
+            code: error.code || 'UNKNOWN'
         });
     }
 };

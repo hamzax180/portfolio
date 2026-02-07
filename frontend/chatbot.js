@@ -438,7 +438,7 @@ REMEMBER: Be brief! Fast conversation!`;
             console.log('Hanging up: Stopping recognition and canceling speech.');
             this.isRecording = false; // Set to false first to prevent automatic restart in onend
             this.recognition.stop();
-            this.synthesis.cancel(); // Stop bot from talking
+            if (this.synthesis) this.synthesis.cancel(); // Stop bot from talking
         } else {
             console.log('Starting call...');
             this.recognition.start();
