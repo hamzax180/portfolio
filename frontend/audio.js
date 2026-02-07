@@ -78,10 +78,15 @@ class TechAudio {
         osc.stop(now + s.duration);
     }
 
-    startAmbient() {
-        if (!this.ctx || this.ambientNodes.length > 0) return;
+    async startAmbient() {
+        if (!this.ctx) await this.init();
+        if (!this.ctx || (this.ambientNodes && this.ambientNodes.length > 0)) return;
 
-        console.log("🎶 Starting Futuristic Ambient Drone...");
+        if (this.ctx.state === 'suspended') {
+            await this.ctx.resume();
+        }
+
+        console.log("🎶 Tech Audio: Starting Futuristic Ambient Drone...");
 
         const createDrone = (freq, type, vol) => {
             const osc = this.ctx.createOscillator();

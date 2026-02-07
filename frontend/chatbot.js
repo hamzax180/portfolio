@@ -166,19 +166,24 @@ REMEMBER: Be brief! Fast conversation!`;
                 setTimeout(() => this.stopTalking(), talkDuration);
             }
         } catch (error) {
-            console.error('Gemini API Error:', error);
+            console.error('Chatbot API Error:', error);
             this.hideTypingIndicator();
 
             // Show user-friendly error and fallback response
             let errorMessage = "Oops! Something went wrong with my brain. 🧠";
-            if (error.message.includes('timeout')) {
+
+            // Map common error strings to better messages
+            const errStr = error.message.toLowerCase();
+            if (errStr.includes('timeout')) {
                 errorMessage = "The response is taking too long! Let me give you a quick answer instead. 😅";
-            } else if (error.message.includes('API key')) {
-                errorMessage = "I'm having trouble connecting to my AI core (API Key issue). 🔑 Check config.js!";
-            } else if (error.message.includes('API request failed: 403')) {
-                errorMessage = "My API Key seems to be invalid or restricted! ⛔ (Error 403)";
-            } else if (error.message.includes('API request failed: 429')) {
-                errorMessage = "Too many requests! I need to take a quick breather. 😴 (Error 429)";
+            } else if (errStr.includes('403') || errStr.includes('key')) {
+                errorMessage = "I'm having trouble connecting to my AI core (API Key issue). 🔑";
+            } else if (errStr.includes('404') || errStr.includes('model')) {
+                errorMessage = "I can't find that specific AI model right now. 🤖";
+            } else if (errStr.includes('429')) {
+                errorMessage = "Too many requests! I need to take a quick breather. 😴";
+            } else if (error.message && error.message !== 'API request failed: 500') {
+                errorMessage = `Connection Error: ${error.message} 🤖`;
             }
 
             const fallbackResponse = this.generateLocalResponse(text);
