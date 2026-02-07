@@ -8,6 +8,7 @@ class TechAudio {
     constructor() {
         this.ctx = null;
         this.isInitialized = false;
+        this.ambientNodes = [];
 
         // High-volume Interaction Sounds
         this.sounds = {
