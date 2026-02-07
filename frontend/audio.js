@@ -98,7 +98,7 @@ class TechAudio {
             osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
 
             gain.gain.setValueAtTime(0, this.ctx.currentTime);
-            gain.gain.linearRampToValueAtTime(vol, this.ctx.currentTime + 2);
+            gain.gain.linearRampToValueAtTime(vol * 2.5, this.ctx.currentTime + 3); // Significant volume boost
 
             lfo.type = 'sine';
             lfo.frequency.setValueAtTime(0.2, this.ctx.currentTime);
@@ -115,12 +115,9 @@ class TechAudio {
             return { osc, lfo, gain };
         };
 
-        // Add three layers for a richer, more audible texture
-        this.ambientNodes.push(createDrone(55, 'sine', 0.15));    // Bass Layer
-        this.ambientNodes.push(createDrone(110, 'triangle', 0.1)); // Mid Layer
-        this.ambientNodes.push(createDrone(220, 'sine', 0.05));   // High harmonic
-
-        console.log("🎶 Tech Audio: Ambient layers active at increased volume.");
+        // Multi-layered futuristic atmosphere
+        this.ambientNodes.push(createDrone(55, 'sine', 0.1));   // Lower, richer bass
+        this.ambientNodes.push(createDrone(110, 'triangle', 0.08)); // Mid-range texture
     }
 
     stopAmbient() {
