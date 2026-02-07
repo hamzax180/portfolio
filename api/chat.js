@@ -1,4 +1,4 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
@@ -6,7 +6,11 @@ export default async function handler(req, res) {
     }
 
     try {
-        const apiKey = process.env.GEMINI_API_KEY;
+        const apiKey = (process.env.GEMINI_API_KEY || '').trim();
+        if (!apiKey) {
+            throw new Error('GEMINI_API_KEY is not set or empty');
+        }
+
         const genAI = new GoogleGenerativeAI(apiKey);
         const modelName = 'gemini-1.5-flash';
 
@@ -25,27 +29,28 @@ export default async function handler(req, res) {
         // Extract contents and generationConfig from request
         const { contents, generationConfig, system_instruction } = req.body;
 
-        // Use generateContent for a clean stateless response
+        // Ensure contents is an array and formatted correctly
         const result = await model.generateContent({
-            contents,
-            generationConfig,
-            system_instruction
+            contents: Array.isArray(contents) ? contents : [],
+            generationConfig: generationConfig || {},
+            systemInstruction: system_instruction || undefined
         });
 
         const response = await result.response;
-        const data = {
-            candidates: [
-                {
-                    content: {
-                        parts: [{ text: response.text() }]
-                    }
-                }
-            ]
-        };
+        const text = response.text();
 
-        return res.status(200).json(data);
+        return res.status(200).json({
+            candidates: [{
+                content: {
+                    parts: [{ text }]
+                }
+            }]
+        });
     } catch (error) {
         console.error('Gemini SDK Error (Vercel):', error.message);
-        return res.status(500).json({ error: error.message || 'Internal Server Error' });
+        return res.status(500).json({
+            error: error.message || 'Internal Server Error',
+            details: error.stack
+        });
     }
 }

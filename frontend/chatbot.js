@@ -246,13 +246,10 @@ REMEMBER: Be brief! Fast conversation!`;
         console.log('Sending message to backend proxy...');
 
         const requestBody = {
-            contents: [
-                {
-                    role: 'user',
-                    parts: [{ text: this.systemPrompt }]
-                },
-                ...this.conversationHistory.slice(-10)
-            ],
+            system_instruction: {
+                parts: [{ text: this.systemPrompt }]
+            },
+            contents: this.conversationHistory.slice(-10),
             generationConfig: {
                 temperature: 0.9,
                 topK: 40,
