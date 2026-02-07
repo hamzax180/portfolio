@@ -1,35 +1,51 @@
-const axios = require('axios');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 export default async function handler(req, res) {
-    // Vercel handles CORS and environment variables automatically
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method Not Allowed' });
     }
 
     try {
         const apiKey = process.env.GEMINI_API_KEY;
-        const model = 'gemini-2.5-flash';
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+        const genAI = new GoogleGenerativeAI(apiKey);
+        const modelName = 'gemini-1.5-flash';
 
-        // Add safety settings to ensure consistent conversational flow
-        const bodyWithSafety = {
-            ...req.body,
+        const model = genAI.getGenerativeModel({
+            model: modelName,
             safetySettings: [
                 { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
                 { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
                 { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },
                 { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' }
             ]
-        };
-
-        console.log('Vercel Function: Proxying request to Gemini...');
-        const response = await axios.post(url, bodyWithSafety, {
-            headers: { 'Content-Type': 'application/json' }
         });
 
-        return res.status(200).json(response.data);
+        console.log('Vercel Function: Generating content via SDK...');
+
+        // Extract contents and generationConfig from request
+        const { contents, generationConfig, system_instruction } = req.body;
+
+        // Use generateContent for a clean stateless response
+        const result = await model.generateContent({
+            contents,
+            generationConfig,
+            system_instruction
+        });
+
+        const response = await result.response;
+        const data = {
+            candidates: [
+                {
+                    content: {
+                        parts: [{ text: response.text() }]
+                    }
+                }
+            ]
+        };
+
+        return res.status(200).json(data);
     } catch (error) {
-        console.error('Gemini Proxy Error (Vercel):', error.response?.data || error.message);
-        return res.status(error.response?.status || 500).json(error.response?.data || { error: 'Internal Server Error' });
+        console.error('Gemini SDK Error (Vercel):', error.message);
+        return res.status(500).json({ error: error.message || 'Internal Server Error' });
     }
 }
