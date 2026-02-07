@@ -166,31 +166,17 @@ REMEMBER: Be brief! Fast conversation!`;
                 setTimeout(() => this.stopTalking(), talkDuration);
             }
         } catch (error) {
-            console.error('Chatbot API Error:', error);
+            console.error('Chatbot API Detailed Error:', error);
             this.hideTypingIndicator();
 
-            // Show user-friendly error and fallback response
-            let errorMessage = "Oops! Something went wrong with my brain. 🧠";
-
-            // Map common error strings to better messages
-            const errStr = error.message.toLowerCase();
-            if (errStr.includes('timeout')) {
-                errorMessage = "The response is taking too long! Let me give you a quick answer instead. 😅";
-            } else if (errStr.includes('403') || errStr.includes('key')) {
-                errorMessage = "I'm having trouble connecting to my AI core (API Key issue). 🔑";
-            } else if (errStr.includes('404') || errStr.includes('model')) {
-                errorMessage = "I can't find that specific AI model right now. 🤖";
-            } else if (errStr.includes('429')) {
-                errorMessage = "Too many requests! I need to take a quick breather. 😴";
-            } else if (error.message && error.message !== 'API request failed: 500') {
-                errorMessage = `Connection Error: ${error.message} 🤖`;
-            }
+            // Force show the connection error with the exact message from Gateway
+            const errorMessage = `Connection Error: ${error.message} 🤖`;
 
             const fallbackResponse = this.generateLocalResponse(text);
             this.appendMessage('bot', `${errorMessage}\n\n${fallbackResponse}`);
 
             if (speakResponse) {
-                this.speak(errorMessage + ". " + fallbackResponse);
+                this.speak(errorMessage.split('🤖')[0] + ". " + fallbackResponse);
             }
         }
     }
