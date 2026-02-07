@@ -19,36 +19,28 @@ app.get('/', (req, res) => {
 app.post('/api/chat', async (req, res) => {
     try {
         const apiKey = process.env.GEMINI_API_KEY;
-        // User provided Cloudflare AI Gateway URL
-        const url = `https://gateway.ai.cloudflare.com/v1/e6cb60143ddb10f4779652736b6cd451/h-a-m-z-a-s-s-i-s-t-a-n-t/openai/chat/completions`;
+        const model = 'gemini-1.5-flash-latest';
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
-        const requestBody = {
-            model: 'openai/gpt-5.2',
-            messages: req.body.contents.map(c => ({
-                role: c.role === 'user' ? 'user' : 'assistant',
-                content: c.parts[0].text
-            })),
-            temperature: 0.7
+        // Add safety settings to ensure consistent conversational flow
+        const bodyWithSafety = {
+            ...req.body,
+            safetySettings: [
+                { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
+                { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
+                { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },
+                { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' }
+            ]
         };
 
-        console.log('Proxying request to AI Gateway...');
-        const response = await axios.post(url, requestBody, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`
-            }
+        console.log('Proxying request to Gemini...');
+        const response = await axios.post(url, bodyWithSafety, {
+            headers: { 'Content-Type': 'application/json' }
         });
 
-        // Convert OpenAI format back to the format the frontend expects or simplify it
-        res.json({
-            candidates: [{
-                content: {
-                    parts: [{ text: response.data.choices[0].message.content }]
-                }
-            }]
-        });
+        res.json(response.data);
     } catch (error) {
-        console.error('AI Gateway Proxy Error:', error.response?.data || error.message);
+        console.error('Gemini Proxy Error:', error.response?.data || error.message);
         res.status(error.response?.status || 500).json(error.response?.data || { error: 'Internal Server Error' });
     }
 });

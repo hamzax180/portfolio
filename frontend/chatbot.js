@@ -18,7 +18,6 @@ class HamzaChatbot {
         this.isOpen = false;
         this.isRecording = false;
         this.conversationHistory = [];
-        this.synthesis = window.speechSynthesis;
 
         console.log('Chatbot initializing...');
 
@@ -166,17 +165,26 @@ REMEMBER: Be brief! Fast conversation!`;
                 setTimeout(() => this.stopTalking(), talkDuration);
             }
         } catch (error) {
-            console.error('Chatbot API Error Details:', error);
+            console.error('Gemini API Error:', error);
             this.hideTypingIndicator();
 
-            // More elegant error handling for production feel
-            const errorMessage = "I'm having a little trouble connecting right now...";
-            const fallbackResponse = this.generateLocalResponse(text);
+            // Show user-friendly error and fallback response
+            let errorMessage = "Oops! Something went wrong with my brain. 🧠";
+            if (error.message.includes('timeout')) {
+                errorMessage = "The response is taking too long! Let me give you a quick answer instead. 😅";
+            } else if (error.message.includes('API key')) {
+                errorMessage = "I'm having trouble connecting to my AI core (API Key issue). 🔑 Check config.js!";
+            } else if (error.message.includes('API request failed: 403')) {
+                errorMessage = "My API Key seems to be invalid or restricted! ⛔ (Error 403)";
+            } else if (error.message.includes('API request failed: 429')) {
+                errorMessage = "Too many requests! I need to take a quick breather. 😴 (Error 429)";
+            }
 
+            const fallbackResponse = this.generateLocalResponse(text);
             this.appendMessage('bot', `${errorMessage}\n\n${fallbackResponse}`);
 
             if (speakResponse) {
-                this.speak(errorMessage + " " + fallbackResponse);
+                this.speak(errorMessage + ". " + fallbackResponse);
             }
         }
     }
@@ -216,16 +224,15 @@ REMEMBER: Be brief! Fast conversation!`;
             });
 
 
-            const data = await response.json().catch(() => ({}));
             clearTimeout(timeoutId);
 
             if (!response.ok) {
-                console.error('Proxy/Gateway Error:', data);
-                // Extract the most helpful message from the deep JSON structure
-                const details = data.details || data.error || {};
-                const msg = details.message || details.error || (typeof details === 'string' ? details : `Status ${response.status}`);
-                throw new Error(msg);
+                const errorData = await response.json().catch(() => ({}));
+                console.error('Proxy Error Response:', errorData);
+                throw new Error(`API request failed: ${response.status}`);
             }
+
+            const data = await response.json();
 
             if (data.candidates && data.candidates[0] && data.candidates[0].content) {
                 return data.candidates[0].content.parts[0].text;
