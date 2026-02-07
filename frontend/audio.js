@@ -76,6 +76,54 @@ class TechAudio {
         osc.start(now);
         osc.stop(now + s.duration);
     }
+
+    startAmbient() {
+        if (!this.ctx || this.ambientNodes.length > 0) return;
+
+        console.log("🎶 Starting Futuristic Ambient Drone...");
+
+        const createDrone = (freq, type, vol) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            const lfo = this.ctx.createOscillator();
+            const lfoGain = this.ctx.createGain();
+
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+
+            gain.gain.setValueAtTime(0, this.ctx.currentTime);
+            gain.gain.linearRampToValueAtTime(vol, this.ctx.currentTime + 2);
+
+            lfo.type = 'sine';
+            lfo.frequency.setValueAtTime(0.2, this.ctx.currentTime);
+            lfoGain.gain.setValueAtTime(freq * 0.05, this.ctx.currentTime);
+
+            lfo.connect(lfoGain);
+            lfoGain.connect(osc.frequency);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+
+            lfo.start();
+            osc.start();
+
+            return { osc, lfo, gain };
+        };
+
+        // Add two layers for a richer texture
+        this.ambientNodes.push(createDrone(60, 'sine', 0.03));
+        this.ambientNodes.push(createDrone(120, 'triangle', 0.02));
+    }
+
+    stopAmbient() {
+        this.ambientNodes.forEach(node => {
+            node.gain.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 1);
+            setTimeout(() => {
+                node.osc.stop();
+                node.lfo.stop();
+            }, 1000);
+        });
+        this.ambientNodes = [];
+    }
 }
 
 // Global instance for window access
@@ -84,6 +132,8 @@ window.techAudio = new TechAudio();
 // Multi-trigger listener for first-time activation
 ['click', 'mousedown', 'keydown', 'touchstart'].forEach(evt => {
     window.addEventListener(evt, () => {
-        window.techAudio.init();
+        window.techAudio.init().then(() => {
+            window.techAudio.startAmbient();
+        });
     }, { once: true });
 });
