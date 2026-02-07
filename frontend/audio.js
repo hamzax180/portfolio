@@ -135,15 +135,25 @@ class TechAudio {
 // Global instance for window access
 window.techAudio = new TechAudio();
 
-// Multi-trigger listener for first-time activation
+// Multi-trigger listener for first-time activation - GESTURE REQUIRED
+const initTrigger = async (evt) => {
+    console.log(`🤖 Tech Audio: Interaction (${evt}) - Activating AI Audio Engine...`);
+    try {
+        await window.techAudio.init();
+        if (window.techAudio.isInitialized) {
+            await window.techAudio.startAmbient();
+            window.techAudio.play('startup');
+
+            // Remove listeners once activated
+            ['click', 'mousedown', 'keydown', 'touchstart'].forEach(e => {
+                window.removeEventListener(e, initTrigger);
+            });
+        }
+    } catch (err) {
+        console.error("🤖 Tech Audio: Activation failed:", err);
+    }
+};
+
 ['click', 'mousedown', 'keydown', 'touchstart'].forEach(evt => {
-    window.addEventListener(evt, () => {
-        console.log(`🤖 Tech Audio: Interaction (${evt}) - Initializing...`);
-        window.techAudio.init().then(() => {
-            if (window.techAudio.isInitialized) {
-                window.techAudio.startAmbient();
-                window.techAudio.play('startup');
-            }
-        });
-    }, { once: true });
+    window.addEventListener(evt, initTrigger);
 });
