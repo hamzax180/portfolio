@@ -12,7 +12,7 @@ export default async function handler(req, res) {
         const url = `https://gateway.ai.cloudflare.com/v1/e6cb60143ddb10f4779652736b6cd451/h-a-m-z-a-s-s-i-s-t-a-n-t/openai/chat/completions`;
 
         const requestBody = {
-            model: 'openai/gpt-5.2', // Reverting to user-provided model ID
+            model: 'gpt-4o-mini', // Guaranteed stable model for OpenAI gateway
             messages: req.body.contents.map(c => ({
                 role: c.role === 'user' ? 'user' : 'assistant',
                 content: c.parts[0].text
