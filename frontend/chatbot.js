@@ -18,6 +18,7 @@ class HamzaChatbot {
         this.isOpen = false;
         this.isRecording = false;
         this.conversationHistory = [];
+        this.synthesis = window.speechSynthesis;
 
         console.log('Chatbot initializing...');
 

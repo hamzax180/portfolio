@@ -38,6 +38,10 @@ export default async function handler(req, res) {
         });
     } catch (error) {
         console.error('AI Gateway Proxy Error:', error.response?.data || error.message);
-        return res.status(error.response?.status || 500).json(error.response?.data || { error: 'Internal Server Error' });
+        const errorDetail = error.response?.data || { error: error.message };
+        return res.status(error.response?.status || 500).json({
+            error: 'AI Gateway Request Failed',
+            details: errorDetail
+        });
     }
 }
