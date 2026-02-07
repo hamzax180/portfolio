@@ -12,9 +12,10 @@ export default async function handler(req, res) {
         const url = `https://gateway.ai.cloudflare.com/v1/e6cb60143ddb10f4779652736b6cd451/h-a-m-z-a-s-s-i-s-t-a-n-t/openai/chat/completions`;
 
         const requestBody = {
-            model: 'gpt-4o-mini', // Guaranteed stable model for OpenAI gateway
-            messages: req.body.contents.map(c => ({
-                role: c.role === 'user' ? 'user' : 'assistant',
+            model: 'gpt-4o-mini', // Production-ready stable model
+            messages: req.body.contents.map((c, index) => ({
+                // The first message is the systemPrompt, mark it as 'system'
+                role: index === 0 ? 'system' : (c.role === 'user' ? 'user' : 'assistant'),
                 content: c.parts[0].text
             })),
             temperature: 0.7

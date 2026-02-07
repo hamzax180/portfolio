@@ -88,7 +88,7 @@ class TechAudio {
 
         console.log("🎶 Tech Audio: Starting Futuristic Ambient Drone...");
 
-        const createDrone = (freq, type, vol) => {
+        const createDrone = (freq, type, vol, modFreq = 0) => {
             const osc = this.ctx.createOscillator();
             const gain = this.ctx.createGain();
             const lfo = this.ctx.createOscillator();
@@ -97,27 +97,45 @@ class TechAudio {
             osc.type = type;
             osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
 
+            // Robotic FM Modulation
+            if (modFreq > 0) {
+                const mod = this.ctx.createOscillator();
+                const modGain = this.ctx.createGain();
+                mod.frequency.setValueAtTime(modFreq, this.ctx.currentTime);
+                modGain.gain.setValueAtTime(freq * 0.5, this.ctx.currentTime);
+                mod.connect(modGain);
+                modGain.connect(osc.frequency);
+                mod.start();
+            }
+
             gain.gain.setValueAtTime(0, this.ctx.currentTime);
-            gain.gain.linearRampToValueAtTime(vol * 2.5, this.ctx.currentTime + 3); // Significant volume boost
+            gain.gain.linearRampToValueAtTime(vol * 2.5, this.ctx.currentTime + 4);
 
             lfo.type = 'sine';
-            lfo.frequency.setValueAtTime(0.2, this.ctx.currentTime);
-            lfoGain.gain.setValueAtTime(freq * 0.05, this.ctx.currentTime);
+            lfo.frequency.setValueAtTime(0.1 + Math.random() * 0.2, this.ctx.currentTime);
+            lfoGain.gain.setValueAtTime(freq * 0.08, this.ctx.currentTime);
 
             lfo.connect(lfoGain);
             lfoGain.connect(osc.frequency);
             osc.connect(gain);
-            gain.connect(this.ctx.destination);
+
+            // Add Scifi "Filter Pulse"
+            const filter = this.ctx.createBiquadFilter();
+            filter.type = 'bandpass';
+            filter.frequency.setValueAtTime(freq * 2, this.ctx.currentTime);
+            gain.connect(filter);
+            filter.connect(this.ctx.destination);
 
             lfo.start();
             osc.start();
 
-            return { osc, lfo, gain };
+            return { osc, lfo, gain, filter };
         };
 
-        // Multi-layered futuristic atmosphere
-        this.ambientNodes.push(createDrone(55, 'sine', 0.1));   // Lower, richer bass
-        this.ambientNodes.push(createDrone(110, 'triangle', 0.08)); // Mid-range texture
+        // Multi-layered "Living Machine" atmosphere
+        this.ambientNodes.push(createDrone(50, 'sine', 0.12));       // Deep hum
+        this.ambientNodes.push(createDrone(150, 'sawtooth', 0.05, 30)); // Robotic buzz
+        this.ambientNodes.push(createDrone(220, 'square', 0.03, 120)); // High-tech pulse
     }
 
     stopAmbient() {
