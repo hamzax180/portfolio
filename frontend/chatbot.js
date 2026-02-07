@@ -235,7 +235,9 @@ REMEMBER: Be brief! Fast conversation!`;
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
                 console.error('Proxy Error Response:', errorData);
-                throw new Error(`API request failed: ${response.status}`);
+                // Throw the detailed message if it exists
+                const detailMsg = errorData.details?.message || errorData.details?.error || errorData.error || 'Server Error';
+                throw new Error(`API: ${detailMsg}`);
             }
 
             const data = await response.json();

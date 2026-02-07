@@ -115,9 +115,12 @@ class TechAudio {
             return { osc, lfo, gain };
         };
 
-        // Add two layers for a richer texture
-        this.ambientNodes.push(createDrone(60, 'sine', 0.03));
-        this.ambientNodes.push(createDrone(120, 'triangle', 0.02));
+        // Add three layers for a richer, more audible texture
+        this.ambientNodes.push(createDrone(55, 'sine', 0.15));    // Bass Layer
+        this.ambientNodes.push(createDrone(110, 'triangle', 0.1)); // Mid Layer
+        this.ambientNodes.push(createDrone(220, 'sine', 0.05));   // High harmonic
+
+        console.log("🎶 Tech Audio: Ambient layers active at increased volume.");
     }
 
     stopAmbient() {
