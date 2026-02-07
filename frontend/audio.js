@@ -138,8 +138,12 @@ window.techAudio = new TechAudio();
 // Multi-trigger listener for first-time activation
 ['click', 'mousedown', 'keydown', 'touchstart'].forEach(evt => {
     window.addEventListener(evt, () => {
+        console.log(`🤖 Tech Audio: Interaction (${evt}) - Initializing...`);
         window.techAudio.init().then(() => {
-            window.techAudio.startAmbient();
+            if (window.techAudio.isInitialized) {
+                window.techAudio.startAmbient();
+                window.techAudio.play('startup');
+            }
         });
     }, { once: true });
 });
