@@ -278,8 +278,8 @@ REMEMBER: Be brief! Fast conversation!`;
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
-                console.error('Proxy Error Response:', errorData);
-                throw new Error(`API request failed: ${response.status}`);
+                console.error('Proxy Error Response (RAW):', errorData);
+                throw new Error(`API request failed: ${response.status} - ${errorData.error || 'Unknown error'}`);
             }
 
             const data = await response.json();
