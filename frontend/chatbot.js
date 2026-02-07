@@ -230,19 +230,15 @@ REMEMBER: Be brief! Fast conversation!`;
             });
 
 
+            const data = await response.json().catch(() => ({}));
             clearTimeout(timeoutId);
 
             if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                console.error('Proxy Error Response:', errorData);
-                throw new Error(`API request failed: ${response.status}`);
-            }
-
-            const data = await response.json();
-
-            if (data.error && data.details) {
-                console.error('AI Gateway Detailed Error:', data.details);
-                throw new Error(data.details.message || data.details.error || 'Gateway Error');
+                console.error('Proxy/Gateway Error:', data);
+                // Extract the most helpful message from the deep JSON structure
+                const details = data.details || data.error || {};
+                const msg = details.message || details.error || (typeof details === 'string' ? details : `Status ${response.status}`);
+                throw new Error(msg);
             }
 
             if (data.candidates && data.candidates[0] && data.candidates[0].content) {
