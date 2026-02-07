@@ -1694,7 +1694,10 @@ section {
 
     .chat-window {
         width: calc(100vw - 40px);
-        right: -10px;
+        max-width: 400px;
+        right: 0;
+        bottom: 75px;
+        max-height: 70vh;
     }
 }
 

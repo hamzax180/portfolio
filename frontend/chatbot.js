@@ -166,17 +166,17 @@ REMEMBER: Be brief! Fast conversation!`;
                 setTimeout(() => this.stopTalking(), talkDuration);
             }
         } catch (error) {
-            console.error('Chatbot API Detailed Error:', error);
+            console.error('Chatbot API Error Details:', error);
             this.hideTypingIndicator();
 
-            // Force show the connection error with the exact message from Gateway
-            const errorMessage = `Connection Error: ${error.message} 🤖`;
-
+            // More elegant error handling for production feel
+            const errorMessage = "I'm having a little trouble connecting right now...";
             const fallbackResponse = this.generateLocalResponse(text);
+
             this.appendMessage('bot', `${errorMessage}\n\n${fallbackResponse}`);
 
             if (speakResponse) {
-                this.speak(errorMessage.split('🤖')[0] + ". " + fallbackResponse);
+                this.speak(errorMessage + " " + fallbackResponse);
             }
         }
     }
