@@ -29,6 +29,7 @@ class HamzaChatbot {
 
         console.log('Chatbot initializing...');
 
+        this.synthesis = window.speechSynthesis;
         this.setupAudioTriggers();
         this.setupSpeechRecognition();
 
@@ -380,7 +381,7 @@ REMEMBER: Be brief! Fast conversation!`;
 
         this.recognition.onspeechstart = () => {
             // Stop bot from talking whenever user starts speaking
-            if (this.synthesis.speaking) {
+            if (this.synthesis && this.synthesis.speaking) {
                 console.log('User spoke, interrupting bot...');
                 this.synthesis.cancel();
             }
@@ -405,7 +406,7 @@ REMEMBER: Be brief! Fast conversation!`;
                     finalTranscript += event.results[i][0].transcript;
                 } else {
                     // Interrupt if bot is speaking during interim results
-                    if (this.synthesis.speaking) {
+                    if (this.synthesis && this.synthesis.speaking) {
                         this.synthesis.cancel();
                     }
                 }
@@ -445,6 +446,8 @@ REMEMBER: Be brief! Fast conversation!`;
     }
 
     speak(text) {
+        if (!this.synthesis) return;
+
         // Cancel any ongoing speech
         this.synthesis.cancel();
 
