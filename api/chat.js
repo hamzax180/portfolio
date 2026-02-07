@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     try {
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
         const model = genAI.getGenerativeModel({
-            model: "gemini-2.0-flash-exp" // Using stable/current available version, user screenshot says 2.5 but 1.5/2.0 is current. Actually I'll use exactly what they show if it works. Let's try gemini-2.5-flash as requested.
+            model: "models/gemini-2.5-flash"
         });
 
         // The input req.body matches the expected structure of generateContent
