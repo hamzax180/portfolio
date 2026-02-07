@@ -18,10 +18,18 @@ class HamzaChatbot {
         this.isOpen = false;
         this.isRecording = false;
         this.conversationHistory = [];
-        this.synthesis = window.speechSynthesis;
+
+        // Futuristic Audio Controller
+        this.audioCtx = null;
+        this.sounds = {
+            whoosh: { freq: 150, type: 'sawtooth', duration: 0.4, vol: 0.15, sweep: true },
+            beep: { freq: 1200, type: 'triangle', duration: 0.15, vol: 0.2 },
+            think: { freq: 440, type: 'sine', duration: 0.1, vol: 0.05 }
+        };
 
         console.log('Chatbot initializing...');
 
+        this.setupAudioTriggers();
         this.setupSpeechRecognition();
 
         // Hamza's comprehensive knowledge base for AI training
@@ -30,14 +38,14 @@ class HamzaChatbot {
 ## CONVERSATION STYLE
 - Keep responses EXTREMELY SHORT (1-2 sentences max). This is a fast-paced phone call.
 - Be casual and natural. Use "Yeah", "Sure", "Nice".
-- Refer to Hamza as "mr.Hamza" or "he".
+- Refer to Hamza as "Hamza" or "he".
 - You can discuss anything, but always keep it brief.
 - If they ask for detail, give it in only 1-2 short sentences.
 
 ## HAMZA'S INFO
 - Student at Altinbas University (CS, Grad 2026).
 - Skills: Python, JS, TypeScript, React, Node, AI/RAG, Docker.
-- Projects: legal document assistant, Alhadaf (E-commerce), La Liga Hub.
+- Projects: Rihlah (AI Travel), Alhadaf (E-commerce), La Liga Hub.
 - Contact: hamza1tot@gmail.com, +90 536 429 2064.
 
 REMEMBER: Be brief! Fast conversation!`;
@@ -66,11 +74,55 @@ REMEMBER: Be brief! Fast conversation!`;
         }
     }
 
+    // --- Audio Synthesis ---
+    initAudio() {
+        if (this.audioCtx) return;
+        try {
+            this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            console.log("🤖 Hamza AI: Audio Activated");
+        } catch (e) {
+            console.error("Audio failed:", e);
+        }
+    }
+
+    setupAudioTriggers() {
+        ['mousedown', 'click', 'keydown', 'touchstart'].forEach(evt => {
+            window.addEventListener(evt, () => this.initAudio(), { once: true });
+        });
+    }
+
+    playTechSound(name) {
+        if (!this.audioCtx) return;
+        if (this.audioCtx.state === 'suspended') this.audioCtx.resume();
+
+        const s = this.sounds[name];
+        if (!s) return;
+
+        const now = this.audioCtx.currentTime;
+        const osc = this.audioCtx.createOscillator();
+        const gain = this.audioCtx.createGain();
+
+        osc.type = s.type;
+        osc.frequency.setValueAtTime(s.freq, now);
+        if (s.sweep) {
+            osc.frequency.exponentialRampToValueAtTime(s.freq * 4, now + s.duration);
+        }
+
+        gain.gain.setValueAtTime(s.vol, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + s.duration);
+
+        osc.connect(gain);
+        gain.connect(this.audioCtx.destination);
+
+        osc.start(now);
+        osc.stop(now + s.duration);
+    }
+
     toggleChat() {
         this.isOpen = !this.isOpen;
         this.widget.classList.toggle('open', this.isOpen);
 
-        if (window.techAudio) window.techAudio.play('whoosh');
+        this.playTechSound('whoosh');
 
         if (this.isOpen) {
             setTimeout(() => this.input.focus(), 300);
@@ -137,7 +189,7 @@ REMEMBER: Be brief! Fast conversation!`;
         const text = this.input.value.trim();
         if (!text) return;
 
-        if (window.techAudio) window.techAudio.play('beep');
+        this.playTechSound('beep');
 
         // Add user message
         this.appendMessage('user', text);
@@ -356,7 +408,7 @@ REMEMBER: Be brief! Fast conversation!`;
                     finalTranscript += event.results[i][0].transcript;
                 } else {
                     // Interrupt if bot is speaking during interim results
-                    if (this.synthesis && this.synthesis.speaking) {
+                    if (this.synthesis.speaking) {
                         this.synthesis.cancel();
                     }
                 }
@@ -396,8 +448,6 @@ REMEMBER: Be brief! Fast conversation!`;
     }
 
     speak(text) {
-        if (!this.synthesis) return;
-
         // Cancel any ongoing speech
         this.synthesis.cancel();
 

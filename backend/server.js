@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+const axios = require('axios');
 require('dotenv').config();
 
 const app = express();
@@ -14,37 +14,34 @@ app.get('/', (req, res) => {
     res.status(200).send('OK');
 });
 
-// Proxy endpoint for Gemini API using official SDK
+// Proxy endpoint for Gemini API
+
 app.post('/api/chat', async (req, res) => {
     try {
-        const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+        const apiKey = process.env.GEMINI_API_KEY;
+        const model = 'gemini-1.5-flash-latest';
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
-        console.log('Proxying request to Gemini via SDK...');
-        const result = await model.generateContent({
-            contents: req.body.contents,
-            generationConfig: req.body.generationConfig,
+        // Add safety settings to ensure consistent conversational flow
+        const bodyWithSafety = {
+            ...req.body,
             safetySettings: [
                 { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
                 { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
                 { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },
                 { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' }
             ]
+        };
+
+        console.log('Proxying request to Gemini...');
+        const response = await axios.post(url, bodyWithSafety, {
+            headers: { 'Content-Type': 'application/json' }
         });
 
-        const text = result.response.text();
-        res.json({
-            candidates: [
-                {
-                    content: {
-                        parts: [{ text: text }]
-                    }
-                }
-            ]
-        });
+        res.json(response.data);
     } catch (error) {
-        console.error('Gemini SDK Error:', error.message);
-        res.status(500).json({ error: error.message });
+        console.error('Gemini Proxy Error:', error.response?.data || error.message);
+        res.status(error.response?.status || 500).json(error.response?.data || { error: 'Internal Server Error' });
     }
 });
 

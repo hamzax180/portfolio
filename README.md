@@ -2,7 +2,7 @@
 
 Modern AI-powered portfolio website featuring a responsive design and an interactive Gemini-powered chatbot with voice capabilities.
 
-**🔗 Live website: [HamzAhdal-AI.vercel.app](https://HamzAhdal-AI.vercel.app)**
+**🔗 Live website: [hamzahdal-ai.vercel.app](https://hamzahdal-ai.vercel.app)**
 
 ## 📂 Project Structure
 

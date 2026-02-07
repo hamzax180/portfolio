@@ -7,7 +7,7 @@
         },
         {
             "source": "/audio.js",
-            "destination": "/frontend/audio.js"
+            "destination": "/backend/audio.js"
         },
         {
             "source": "/",

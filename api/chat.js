@@ -1,42 +1,35 @@
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+const axios = require('axios');
 
 export default async function handler(req, res) {
+    // Vercel handles CORS and environment variables automatically
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method Not Allowed' });
     }
 
     try {
-        const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-        const model = genAI.getGenerativeModel({
-            model: "models/gemini-2.5-flash"
-        });
+        const apiKey = process.env.GEMINI_API_KEY;
+        const model = 'gemini-2.5-flash';
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
-        // The input req.body matches the expected structure of generateContent
-        const result = await model.generateContent({
-            contents: req.body.contents,
-            generationConfig: req.body.generationConfig,
+        // Add safety settings to ensure consistent conversational flow
+        const bodyWithSafety = {
+            ...req.body,
             safetySettings: [
                 { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
                 { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
                 { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },
                 { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' }
             ]
+        };
+
+        console.log('Vercel Function: Proxying request to Gemini...');
+        const response = await axios.post(url, bodyWithSafety, {
+            headers: { 'Content-Type': 'application/json' }
         });
 
-        const text = result.response.text();
-
-        // Return in format expected by chatbot.js
-        return res.status(200).json({
-            candidates: [
-                {
-                    content: {
-                        parts: [{ text: text }]
-                    }
-                }
-            ]
-        });
+        return res.status(200).json(response.data);
     } catch (error) {
-        console.error('Gemini SDK Error (Vercel):', error);
-        return res.status(500).json({ error: error.message });
+        console.error('Gemini Proxy Error (Vercel):', error.response?.data || error.message);
+        return res.status(error.response?.status || 500).json(error.response?.data || { error: 'Internal Server Error' });
     }
 }
