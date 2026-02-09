@@ -52,27 +52,27 @@
 
 /* === Light Theme === */
 [data-theme="light"] {
-    /* Backgrounds - Warm premium light mode */
-    --bg-dark: #fafbfc;
-    --bg-darker: #f0f2f5;
-    --bg-card: rgba(255, 255, 255, 0.8);
+    /* Backgrounds - Blue-tinted light mode */
+    --bg-dark: #f0f7ff;
+    --bg-darker: #e0efff;
+    --bg-card: rgba(255, 255, 255, 0.85);
     --bg-card-hover: rgba(255, 255, 255, 1);
 
-    /* Text - Deep readable colors */
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
-    --text-muted: #94a3b8;
+    /* Text - Deep blue-gray colors */
+    --text-primary: #0c1929;
+    --text-secondary: #3b5068;
+    --text-muted: #7c99b8;
 
-    /* Vibrant colors for light mode */
-    --neon-cyan: #0ea5e9;
-    --neon-purple: #8b5cf6;
-    --neon-magenta: #ec4899;
-    --neon-green: #10b981;
-    --neon-blue: #3b82f6;
+    /* Blue-focused accent colors */
+    --neon-cyan: #0284c7;
+    --neon-purple: #6366f1;
+    --neon-magenta: #a855f7;
+    --neon-green: #059669;
+    --neon-blue: #2563eb;
 
-    /* Light mode gradients */
-    --gradient-primary: linear-gradient(135deg, #0ea5e9, #8b5cf6);
-    --gradient-secondary: linear-gradient(135deg, #ec4899, #0ea5e9);
+    /* Blue gradients */
+    --gradient-primary: linear-gradient(135deg, #0284c7, #6366f1);
+    --gradient-secondary: linear-gradient(135deg, #2563eb, #0284c7);
 }
 
 /* Light mode specific overrides */
