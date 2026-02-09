@@ -14,6 +14,7 @@ class HamzaChatbot {
         this.robotAvatar = document.getElementById('robotAvatar');
         this.micBtn = document.getElementById('chatMic');
         this.voiceStatus = document.getElementById('voiceStatus');
+        this.statusElement = document.querySelector('.chat-status'); // Add status element selector
 
         this.isOpen = false;
         this.isRecording = false;
@@ -57,6 +58,20 @@ REMEMBER: Be brief! Fast conversation!`;
     init() {
         this.bindEvents();
         this.addWelcomeMessage();
+    }
+
+    updateStatus(text, type) {
+        if (!this.statusElement) return;
+
+        // Update text
+        this.statusElement.innerHTML = `<span class="status-dot"></span> ${text}`;
+
+        // Toggle offline class
+        if (type === 'offline') {
+            this.statusElement.classList.add('offline');
+        } else {
+            this.statusElement.classList.remove('offline');
+        }
     }
 
     bindEvents() {
@@ -209,6 +224,9 @@ REMEMBER: Be brief! Fast conversation!`;
             this.appendMessage('bot', response);
             this.conversationHistory.push({ role: 'model', parts: [{ text: response }] });
 
+            // Success - Ensure status is Online
+            this.updateStatus('Online', 'online');
+
             // Speak the response if voice input was used
             if (speakResponse) {
                 this.speak(response);
@@ -224,15 +242,26 @@ REMEMBER: Be brief! Fast conversation!`;
 
             // Show user-friendly error and fallback response
             let errorMessage = "Oops! Something went wrong with my brain. 🧠";
+            let statusText = "Offline (Error)";
+
             if (error.message.includes('timeout')) {
                 errorMessage = "The response is taking too long! Let me give you a quick answer instead. 😅";
+                statusText = "Offline (Timeout)";
             } else if (error.message.includes('API key')) {
                 errorMessage = "I'm having trouble connecting to my AI core (API Key issue). 🔑 Check config.js!";
+                statusText = "Offline (Auth)";
             } else if (error.message.includes('API request failed: 403')) {
                 errorMessage = "My API Key seems to be invalid or restricted! ⛔ (Error 403)";
+                statusText = "Offline (Auth)";
             } else if (error.message.includes('API request failed: 429')) {
                 errorMessage = "Too many requests! I need to take a quick breather. 😴 (Error 429)";
+                statusText = "Offline (Busy)";
+            } else if (error.message.includes('500')) {
+                statusText = "Offline (Server)";
             }
+
+            // Set Status to Offline
+            this.updateStatus(statusText, 'offline');
 
             const fallbackResponse = this.generateLocalResponse(text);
             this.appendMessage('bot', `${errorMessage}\n\n${fallbackResponse}`);
