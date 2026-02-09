@@ -10,7 +10,8 @@
     --neon-purple: #a855f7;
     --neon-blue: #3b82f6;
     --neon-pink: #ec4899;
-    --neon-green: #22c55e;
+    --neon-green: #39ff14;
+    /* Brighter Neon Green */
 
     /* Backgrounds */
     --bg-dark: #0a0a0f;
@@ -1583,8 +1584,8 @@ section {
     align-items: center;
     gap: 0.3rem;
     font-size: 0.75rem;
-    color: #ffffff;
-    /* White Online Status */
+    color: #ffffff !important;
+    /* Force White Online Status */
     transition: color 0.3s ease;
 }
 
