@@ -246,11 +246,16 @@ REMEMBER: Be brief! Fast conversation!`;
     async callGeminiAPI(userMessage) {
         console.log('Sending message to backend proxy...');
 
+        // Make sure we always have valid contents - include current message
+        const historyContents = this.conversationHistory.slice(-10);
+
+        // If history is empty or doesn't include the latest user message, we need to add it
+        // The conversation history should already have the user message added before calling this
         const requestBody = {
             system_instruction: {
                 parts: [{ text: this.systemPrompt }]
             },
-            contents: this.conversationHistory.slice(-10),
+            contents: historyContents.length > 0 ? historyContents : [{ role: 'user', parts: [{ text: userMessage }] }],
             generationConfig: {
                 temperature: 0.9,
                 topK: 40,
