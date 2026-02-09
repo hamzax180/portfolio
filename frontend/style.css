@@ -2086,3 +2086,36 @@ section {
 [data-theme="light"] .project-click-badge {
     color: #ffffff;
 }
+
+/* === FORCED CHAT HEADER STYLES === */
+[data-theme="light"] .chat-header h4,
+[data-theme="light"] .chat-header-info h4 {
+    color: #0ea5e9 !important;
+    /* Sky Blue */
+    text-shadow: none !important;
+}
+
+[data-theme="light"] .chat-status {
+    color: #64748b !important;
+}
+
+/* === MOBILE CHAT FIX === */
+@media (max-width: 768px) {
+    #chatWindow {
+        width: 100vw !important;
+        height: 100dvh !important;
+        max-height: none !important;
+        bottom: 0 !important;
+        right: 0 !important;
+        left: 0 !important;
+        border-radius: 0 !important;
+        position: fixed !important;
+        z-index: 9999 !important;
+        margin: 0 !important;
+    }
+
+    #chatToggle {
+        display: none !important;
+        /* Hide toggle when chat is open/active logic should handle this, but if window covers it, it's fine */
+    }
+}
