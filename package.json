@@ -3,6 +3,6 @@
     "@google/generative-ai": "^0.24.1"
   },
   "scripts": {
-    "build": "echo 'No build step required'"
+    "build": "mkdir -p public && cp -r frontend/* public/"
   }
 }
