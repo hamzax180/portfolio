@@ -2280,6 +2280,34 @@ section {
         color: #00f0ff !important;
         text-shadow: 0 0 5px rgba(0, 0, 0, 0.5) !important;
     }
+
+    .chat-header {
+        padding: 1rem !important;
+        gap: 0.5rem !important;
+    }
+
+    .chat-avatar {
+        width: clamp(50px, 15vw, 70px) !important;
+        height: clamp(50px, 15vw, 70px) !important;
+        border-width: 2px !important;
+        margin-bottom: 0.25rem !important;
+    }
+
+    .robot-eye {
+        width: 10px !important;
+        height: 10px !important;
+        box-shadow: 0 0 8px var(--neon-cyan) !important;
+    }
+
+    .robot-eyes {
+        gap: 10px !important;
+        margin-bottom: 6px !important;
+    }
+
+    .robot-mouth {
+        width: 18px !important;
+        height: 4px !important;
+    }
 }
 
 /* === FORCE OVERRIDES FOR CHAT STATUS === */
