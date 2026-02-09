@@ -31,6 +31,12 @@ class HamzaChatbot {
         console.log('Chatbot initializing...');
 
         this.synthesis = window.speechSynthesis;
+        this.speechEnabled = false; // Track if speech is unlocked
+        this.voicesLoaded = false;
+
+        // Pre-load voices
+        this.loadVoices();
+
         this.setupAudioTriggers();
         this.setupSpeechRecognition();
 
@@ -103,8 +109,48 @@ REMEMBER: Be brief! Fast conversation!`;
 
     setupAudioTriggers() {
         ['mousedown', 'click', 'keydown', 'touchstart'].forEach(evt => {
-            window.addEventListener(evt, () => this.initAudio(), { once: true });
+            window.addEventListener(evt, () => {
+                this.initAudio();
+                this.unlockSpeech();
+            }, { once: true });
         });
+    }
+
+    // Pre-load available voices
+    loadVoices() {
+        if (!this.synthesis) return;
+
+        const loadVoiceList = () => {
+            this.voices = this.synthesis.getVoices();
+            if (this.voices.length > 0) {
+                this.voicesLoaded = true;
+                console.log('🎤 Voices loaded:', this.voices.length);
+            }
+        };
+
+        loadVoiceList();
+
+        // Chrome loads voices async
+        if (this.synthesis.onvoiceschanged !== undefined) {
+            this.synthesis.onvoiceschanged = loadVoiceList;
+        }
+    }
+
+    // Unlock speech synthesis (required for mobile browsers)
+    unlockSpeech() {
+        if (this.speechEnabled || !this.synthesis) return;
+
+        try {
+            // Create a silent utterance to unlock speech
+            const unlock = new SpeechSynthesisUtterance('');
+            unlock.volume = 0;
+            this.synthesis.speak(unlock);
+            this.synthesis.cancel();
+            this.speechEnabled = true;
+            console.log('🔊 Speech synthesis unlocked');
+        } catch (e) {
+            console.warn('Could not unlock speech:', e);
+        }
     }
 
     playTechSound(name) {
@@ -468,6 +514,10 @@ REMEMBER: Be brief! Fast conversation!`;
             return;
         }
 
+        // Ensure audio and speech are unlocked on mic click
+        this.initAudio();
+        this.unlockSpeech();
+
         if (this.isRecording) {
             console.log('Hanging up: Stopping recognition and canceling speech.');
             this.isRecording = false; // Set to false first to prevent automatic restart in onend
@@ -475,12 +525,22 @@ REMEMBER: Be brief! Fast conversation!`;
             if (this.synthesis) this.synthesis.cancel(); // Stop bot from talking
         } else {
             console.log('Starting call...');
+            // Resume audio context if suspended (Chrome autoplay policy)
+            if (this.audioCtx && this.audioCtx.state === 'suspended') {
+                this.audioCtx.resume();
+            }
             this.recognition.start();
         }
     }
 
     speak(text) {
-        if (!this.synthesis) return;
+        if (!this.synthesis) {
+            console.warn('Speech synthesis not available');
+            return;
+        }
+
+        // Ensure speech is unlocked
+        this.unlockSpeech();
 
         // Cancel any ongoing speech
         this.synthesis.cancel();
@@ -493,7 +553,12 @@ REMEMBER: Be brief! Fast conversation!`;
             .replace(/\s+/g, ' ')
             .trim();
 
-        console.log('Speaking:', cleanText.substring(0, 50) + '...');
+        if (!cleanText) {
+            console.log('No text to speak');
+            return;
+        }
+
+        console.log('🔊 Speaking:', cleanText.substring(0, 50) + '...');
 
         const utterance = new SpeechSynthesisUtterance(cleanText);
         // More human-like speech settings
@@ -502,55 +567,70 @@ REMEMBER: Be brief! Fast conversation!`;
         utterance.volume = 1;
         utterance.lang = 'en-US';
 
-        // Get voices - they may load asynchronously
-        const speakWithVoice = () => {
-            const voices = this.synthesis.getVoices();
-            console.log('Available voices:', voices.length);
+        // Use pre-loaded voices if available
+        const voices = this.voices || this.synthesis.getVoices();
+        console.log('Available voices:', voices.length);
 
-            if (voices.length > 0) {
-                const preferredVoice = voices.find(v =>
-                    v.name.includes('Google') && v.lang.startsWith('en')
-                ) || voices.find(v => v.lang.startsWith('en'));
+        if (voices.length > 0) {
+            // Prefer Google voices, then any English voice
+            const preferredVoice = voices.find(v =>
+                v.name.includes('Google') && v.lang.startsWith('en')
+            ) || voices.find(v => v.lang.startsWith('en'));
 
-                if (preferredVoice) {
-                    utterance.voice = preferredVoice;
-                    console.log('Using voice:', preferredVoice.name);
-                }
+            if (preferredVoice) {
+                utterance.voice = preferredVoice;
+                console.log('Using voice:', preferredVoice.name);
             }
+        }
 
-            // Animate robot while speaking
-            utterance.onstart = () => {
-                console.log('Speech started');
-                this.startTalking();
-            };
+        // Animate robot while speaking
+        utterance.onstart = () => {
+            console.log('Speech started');
+            this.startTalking();
+        };
+
+        utterance.onend = () => {
+            console.log('Speech ended');
+            this.stopTalking();
+        };
+
+        utterance.onerror = (event) => {
+            console.error('Speech error:', event.error);
+            this.stopTalking();
+            // Try fallback if synthesis failed
+            if (event.error === 'not-allowed') {
+                console.warn('Speech blocked by browser. User interaction required.');
+            }
+        };
+
+        // Chrome bug: synthesis gets stuck, need to resume
+        if (this.synthesis.paused) {
+            this.synthesis.resume();
+        }
+
+        // Speak the utterance
+        try {
+            this.synthesis.speak(utterance);
+
+            // Chrome bug workaround: synthesis can get stuck
+            // Set a watchdog timer to restart if needed
+            const watchdog = setTimeout(() => {
+                if (this.synthesis.speaking && !this.synthesis.paused) {
+                    // Still speaking, all good
+                } else if (!this.synthesis.speaking) {
+                    // Never started speaking, animation cleanup
+                    this.stopTalking();
+                }
+            }, 1000);
 
             utterance.onend = () => {
+                clearTimeout(watchdog);
                 console.log('Speech ended');
                 this.stopTalking();
             };
-
-            utterance.onerror = (event) => {
-                console.error('Speech error:', event.error);
-                this.stopTalking();
-            };
-
-            this.synthesis.speak(utterance);
-        };
-
-        // Voices may not be loaded yet, wait for them
-        if (this.synthesis.getVoices().length === 0) {
-            this.synthesis.addEventListener('voiceschanged', speakWithVoice, { once: true });
-            // Fallback: try speaking anyway after a short delay
-            setTimeout(() => {
-                if (this.synthesis.getVoices().length === 0) {
-                    console.log('No voices loaded, speaking with default');
-                    this.synthesis.speak(utterance);
-                    this.startTalking();
-                    setTimeout(() => this.stopTalking(), 3000);
-                }
-            }, 500);
-        } else {
-            speakWithVoice();
+        } catch (e) {
+            console.error('Failed to speak:', e);
+            this.stopTalking();
         }
     }
 }
