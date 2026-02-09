@@ -2122,7 +2122,10 @@ section {
     }
 
     #chatToggle {
-        display: none !important;
-        /* Hide toggle when chat is open/active logic should handle this, but if window covers it, it's fine */
+        display: flex !important;
+        bottom: 20px !important;
+        right: 20px !important;
+        z-index: 10000 !important;
+        position: fixed !important;
     }
 }
