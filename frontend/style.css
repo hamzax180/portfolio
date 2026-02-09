@@ -1314,8 +1314,8 @@ section {
     margin: 0;
     font-size: 1.1rem;
     font-weight: 600;
-    color: #ffffff !important;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    color: var(--neon-cyan) !important;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
 }
 
 .chat-avatar {
@@ -1538,9 +1538,19 @@ section {
     }
 }
 
-.chat-header-info h4 {
+/* Main Rule Update */
+#chatWindow .chat-header-info h4 {
     font-size: 0.95rem;
     margin-bottom: 0.1rem;
+    color: #00f0ff !important;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Light Mode Override Update */
+[data-theme="light"] .chat-header h4,
+[data-theme="light"] .chat-header-info h4 {
+    color: #00f0ff !important;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5) !important;
 }
 
 .chat-status {
@@ -1956,8 +1966,8 @@ section {
     }
 
     .chat-header h4 {
-        color: #ffffff !important;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        color: #00f0ff !important;
+        text-shadow: 0 0 5px rgba(0, 0, 0, 0.5) !important;
     }
 
     .chat-input-container {
@@ -2087,13 +2097,7 @@ section {
     color: #ffffff;
 }
 
-/* === FORCED CHAT HEADER STYLES === */
-[data-theme="light"] .chat-header h4,
-[data-theme="light"] .chat-header-info h4 {
-    color: #0ea5e9 !important;
-    /* Sky Blue */
-    text-shadow: none !important;
-}
+
 
 [data-theme="light"] .chat-status {
     color: #64748b !important;
