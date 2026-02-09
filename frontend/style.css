@@ -2309,13 +2309,12 @@ section {
         height: 4px !important;
     }
 
-    /* Compact Mobile Input - ABSOLUTE POSITIONING FIX */
+    /* Compact Mobile Input - SIDE-BY-SIDE FIXED LAYOUT */
     .chat-input-container {
-        padding: 0.5rem !important;
+        padding: 0 !important;
         background: #ffffff !important;
         border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
         display: block !important;
-        /* Block for absolute children */
         position: relative !important;
         height: 60px !important;
         min-height: 60px !important;
@@ -2325,26 +2324,31 @@ section {
         background: #f1f5f9 !important;
         color: #1e293b !important;
         border: 1px solid rgba(0, 0, 0, 0.1) !important;
-        padding: 0 55px !important;
-        /* Space for buttons */
-        height: 48px !important;
-        /* Taller input */
+        padding: 0 15px !important;
+        height: 44px !important;
         line-height: normal !important;
-        margin: 6px 0 0 0 !important;
-        /* Centered visually */
         border-radius: 99px !important;
-        width: 100% !important;
         appearance: none !important;
+
+        /* Absolute Center Positioning */
+        position: absolute !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        left: 55px !important;
+        /* Space for Mic */
+        width: calc(100% - 110px) !important;
+        /* Width minus buttons */
+        margin: 0 !important;
     }
 
     .chat-input::placeholder {
         color: #94a3b8 !important;
-        line-height: 48px !important;
+        line-height: 44px !important;
     }
 
     .chat-mic {
         position: absolute !important;
-        left: 10px !important;
+        left: 5px !important;
         top: 50% !important;
         transform: translateY(-50%) !important;
         width: 44px !important;
@@ -2357,7 +2361,7 @@ section {
 
     .chat-send {
         position: absolute !important;
-        right: 10px !important;
+        right: 5px !important;
         top: 50% !important;
         transform: translateY(-50%) !important;
         width: 44px !important;
