@@ -1912,31 +1912,35 @@ section {
         width: 100vw;
         right: 0;
         left: 0;
-        bottom: 70px;
-        max-height: 55vh;
+        bottom: 0;
+        height: 85vh;
+        max-height: 85vh;
         border-radius: var(--radius-md) var(--radius-md) 0 0;
-        z-index: 1001;
+        z-index: 2000;
+        box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.4);
     }
 
     .chat-toggle {
         width: 50px;
         height: 50px;
-        bottom: 10px;
-        right: 10px;
-        z-index: 1002;
+        bottom: 20px;
+        right: 20px;
+        z-index: 2001;
     }
 
     .chat-header {
-        padding: 0.75rem;
+        padding: 1rem;
     }
 
     .chat-input-container {
-        padding: 0.5rem;
+        padding: 0.75rem;
     }
 
     .chat-messages {
-        max-height: 35vh;
-        padding: 0.75rem;
+        flex: 1;
+        max-height: none;
+        min-height: 0;
+        padding: 1rem;
     }
 
     .project-click-badge {
