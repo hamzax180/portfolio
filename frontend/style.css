@@ -2443,15 +2443,18 @@ section {
     }
 
     .chat-header {
-        padding: 1rem !important;
+        padding: 1.5rem 1rem 1rem 1rem !important;
+        /* precise-padding */
         gap: 0.5rem !important;
     }
 
     .chat-avatar {
-        width: clamp(50px, 15vw, 70px) !important;
-        height: clamp(50px, 15vw, 70px) !important;
+        width: clamp(50px, 15vw, 65px) !important;
+        height: clamp(50px, 15vw, 65px) !important;
         border-width: 2px !important;
-        margin-bottom: 0.25rem !important;
+        margin-bottom: 0.5rem !important;
+        margin-top: 0.25rem !important;
+        /* Add breathing room top */
     }
 
     .robot-eye {
@@ -2461,12 +2464,12 @@ section {
     }
 
     .robot-eyes {
-        gap: 10px !important;
-        margin-bottom: 6px !important;
+        gap: 8px !important;
+        margin-bottom: 5px !important;
     }
 
     .robot-mouth {
-        width: 18px !important;
+        width: 16px !important;
         height: 4px !important;
     }
 
