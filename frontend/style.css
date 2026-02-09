@@ -1314,8 +1314,8 @@ section {
     margin: 0;
     font-size: 1.1rem;
     font-weight: 600;
-    color: var(--neon-cyan);
-    text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+    color: #ffffff !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .chat-avatar {
@@ -1956,8 +1956,8 @@ section {
     }
 
     .chat-header h4 {
-        color: var(--neon-cyan);
-        text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+        color: #ffffff !important;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     }
 
     .chat-input-container {
