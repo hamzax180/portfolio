@@ -1310,7 +1310,7 @@ section {
     backdrop-filter: blur(20px);
     border: 1px solid rgba(0, 240, 255, 0.2);
     border-radius: var(--radius-md);
-    overflow: hidden;
+    overflow: visible;
     display: flex;
     flex-direction: column;
     opacity: 0;
@@ -2231,15 +2231,18 @@ section {
         grid-template-columns: 1fr;
     }
 
-    /* Mobile Chat Fix (Small Phones) */
+    /* Mobile Chat Fix (Small Phones ≤480px) */
     #chatWindow {
-        width: 100vw;
-        right: 0;
-        left: 0;
+        width: 100vw !important;
+        right: 0 !important;
+        left: 0 !important;
         bottom: 0 !important;
-        height: 100vh !important;
-        max-height: 100vh !important;
-        border-radius: 0;
+        top: 0 !important;
+        height: 100% !important;
+        max-height: 100% !important;
+        border-radius: 0 !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
     }
 }
 
@@ -2407,34 +2410,22 @@ section {
     }
 
     #chatWindow {
-        /* FIXED: Use dvh for real mobile viewport height */
-        height: 70dvh !important;
-        max-height: 600px !important;
-
-        /* FIXED: Proper positioning */
         width: calc(100% - 30px) !important;
-        left: 15px !important;
+        height: 65vh !important;
+        max-height: 600px !important;
+        bottom: 85px !important;
         right: 15px !important;
-        bottom: calc(85px + env(safe-area-inset-bottom)) !important;
-        /* Account for iPhone home bar */
-
-        /* FIXED: Remove overflow masking to stop head clipping */
-        overflow: visible !important;
-
+        left: 15px !important;
         border-radius: 20px !important;
         position: fixed !important;
         z-index: 9999 !important;
         margin: 0 !important;
         box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4) !important;
         background: rgba(10, 10, 15, 0.98);
-
-        /* FIXED: Transform origin */
-        transform-origin: bottom right;
         transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-
-        /* Layout flex column */
-        display: flex !important;
-        flex-direction: column !important;
+        transform-origin: bottom right;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
     }
 
     [data-theme="light"] #chatWindow {
@@ -2451,63 +2442,25 @@ section {
         position: fixed !important;
     }
 
-    /* Mobile Close Button (Hidden by default) */
-    .mobile-close-chat {
-        display: none;
-    }
-
     #chatWindow h4 {
         color: #00f0ff !important;
         text-shadow: 0 0 5px rgba(0, 0, 0, 0.5) !important;
-        font-size: 1rem !important;
-        /* Slightly smaller for mobile */
     }
 
     .chat-header {
-        padding: 1rem !important;
-        /* Standard padding */
-        padding-top: 1.25rem !important;
+        padding: 1.25rem 1rem 0.75rem 1rem !important;
         gap: 0.5rem !important;
-        position: relative !important;
-        display: flex !important;
-        flex-direction: row !important;
-        /* Ensure row layout for close button */
-        justify-content: space-between !important;
-        align-items: center !important;
-    }
-
-    /* Show Mobile Close Button */
-    .mobile-close-chat {
-        display: flex !important;
-        background: rgba(255, 255, 255, 0.1);
-        border: none;
-        color: var(--text-primary);
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-
-    .mobile-close-chat svg {
-        width: 18px;
-        height: 18px;
-    }
-
-    /* HIDE Floating Toggle when Chat is Open on Mobile */
-    .chat-widget.open #chatToggle {
-        display: none !important;
-        pointer-events: none !important;
+        flex-shrink: 0 !important;
+        /* Never collapse the header */
     }
 
     .chat-avatar {
-        width: clamp(45px, 12vw, 55px) !important;
-        height: clamp(45px, 12vw, 55px) !important;
+        width: 55px !important;
+        height: 55px !important;
         border-width: 2px !important;
         margin: 0 !important;
-        /* Reset margins, let flexbox handle it */
+        /* Reset all margins */
+        flex-shrink: 0 !important;
     }
 
     .robot-eye {
@@ -2524,6 +2477,15 @@ section {
     .robot-mouth {
         width: 16px !important;
         height: 4px !important;
+    }
+
+    /* Fix: Messages area should shrink to fit, not push header off */
+    .chat-messages {
+        min-height: 0 !important;
+        /* Override 300px min-height */
+        flex: 1 1 0 !important;
+        /* Allow shrinking */
+        overflow-y: auto !important;
     }
 
     /* Compact Mobile Input - CSS GRID LAYOUT (Theme-Aware Fix) */
