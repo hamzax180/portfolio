@@ -218,7 +218,15 @@ REMEMBER: Be brief! Fast conversation!`;
         this.playTechSound('whoosh');
 
         if (this.isOpen) {
-            setTimeout(() => this.input.focus(), 300);
+            this.input.focus();
+
+            // On mobile, ensure it doesn't get stuck in weird positions
+            if (window.innerWidth <= 768) {
+                // Reset any inline styles that might have been set by drag/resize
+                this.widget.style.top = '';
+                this.widget.style.left = '';
+                this.widget.style.transform = '';
+            }
         }
     }
 
