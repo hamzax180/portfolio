@@ -56,33 +56,39 @@ REMEMBER: Be brief! Fast conversation!`;
     }
 
     init() {
-        this.bindEvents();
+        this.initElements();
+        this.initEventListeners();
+        this.setupMobileClose();
         this.addWelcomeMessage();
     }
 
-    updateStatus(text, type) {
-        if (!this.statusElement) return;
-
-        // Update text
-        this.statusElement.innerHTML = `< span class="status-dot" ></span > ${ text } `;
-
-        // Toggle offline class
-        if (type === 'offline') {
-            this.statusElement.classList.add('offline');
-        } else {
-            this.statusElement.classList.remove('offline');
-        }
+    initElements() {
+        this.widget = document.getElementById('chatWidget');
+        this.toggleBtn = document.getElementById('chatToggle');
+        this.window = document.getElementById('chatWindow');
+        this.messages = document.getElementById('chatMessages');
+        this.input = document.getElementById('chatInput');
+        this.sendBtn = document.getElementById('chatSend');
+        this.robotAvatar = document.getElementById('robotAvatar');
+        this.mobileCloseBtn = document.getElementById('mobileCloseChat');
     }
 
-    bindEvents() {
+    initEventListeners() {
         // Toggle chat
-        this.toggle.addEventListener('click', () => this.toggleChat());
+        if (this.toggleBtn) {
+            this.toggleBtn.addEventListener('click', () => this.toggleChat());
+        }
 
         // Send message
-        this.sendBtn.addEventListener('click', () => this.sendMessage());
-        this.input.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') this.sendMessage();
-        });
+        if (this.sendBtn) {
+            this.sendBtn.addEventListener('click', () => this.sendMessage());
+        }
+        
+        if (this.input) {
+            this.input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') this.sendMessage();
+            });
+        }
 
         // Voice input
         if (this.micBtn) {
