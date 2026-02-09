@@ -1598,9 +1598,10 @@ section {
 .status-dot {
     width: 6px;
     height: 6px;
-    background: var(--neon-green);
+    background: #39ff14;
+    /* Hardcoded Neon Green */
     border-radius: 50%;
-    box-shadow: 0 0 10px var(--neon-green);
+    box-shadow: 0 0 10px #39ff14;
     animation: pulse-dot 2s infinite;
 }
 
