@@ -1789,6 +1789,37 @@ section {
     }
 }
 
+/* Voice Status Indicator */
+.voice-status {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--neon-magenta);
+    padding: 5px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    height: 0;
+    overflow: hidden;
+}
+
+.voice-status.active {
+    opacity: 1;
+    height: auto;
+    padding-bottom: 10px;
+    animation: pulse-text 1.5s infinite;
+}
+
+@keyframes pulse-text {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
 .chat-input-container {
     display: flex;
     gap: 0.5rem;
