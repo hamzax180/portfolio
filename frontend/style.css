@@ -1829,6 +1829,19 @@ section {
         visibility: visible;
     }
 
+    /* Light mode: Blue dropdown menu */
+    [data-theme="light"] .nav-links {
+        background: linear-gradient(135deg, #0ea5e9, #6366f1);
+    }
+
+    [data-theme="light"] .nav-links a {
+        color: #ffffff !important;
+    }
+
+    [data-theme="light"] .nav-links a:hover {
+        color: rgba(255, 255, 255, 0.8) !important;
+    }
+
     .hero-stats {
         flex-direction: column;
         gap: var(--space-sm);
@@ -1900,8 +1913,9 @@ section {
         right: 0;
         left: 0;
         bottom: 70px;
-        max-height: 60vh;
+        max-height: 55vh;
         border-radius: var(--radius-md) var(--radius-md) 0 0;
+        z-index: 1001;
     }
 
     .chat-toggle {
@@ -1909,6 +1923,7 @@ section {
         height: 50px;
         bottom: 10px;
         right: 10px;
+        z-index: 1002;
     }
 
     .chat-header {
@@ -1917,6 +1932,11 @@ section {
 
     .chat-input-container {
         padding: 0.5rem;
+    }
+
+    .chat-messages {
+        max-height: 35vh;
+        padding: 0.75rem;
     }
 
     .project-click-badge {
