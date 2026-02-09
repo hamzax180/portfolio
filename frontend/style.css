@@ -2084,27 +2084,73 @@ section {
         visibility: visible;
     }
 
-    /* Light mode: Blue dropdown menu */
+    /* Light mode: Clean white dropdown menu */
     [data-theme="light"] .nav-links {
-        background: rgba(255, 255, 255, 0.95);
-        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        background: rgba(255, 255, 255, 0.98);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     }
 
+    /* Link styling for both modes */
+    .nav-links li {
+        width: 100%;
+        opacity: 0;
+        transform: translateX(-10px);
+        transition: all 0.3s ease;
+    }
+
+    .nav-links.active li {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    /* Staggered animation for menu items */
+    .nav-links.active li:nth-child(1) {
+        transition-delay: 0.1s;
+    }
+
+    .nav-links.active li:nth-child(2) {
+        transition-delay: 0.2s;
+    }
+
+    .nav-links.active li:nth-child(3) {
+        transition-delay: 0.3s;
+    }
+
+    .nav-links.active li:nth-child(4) {
+        transition-delay: 0.4s;
+    }
+
+    .nav-links.active li:nth-child(5) {
+        transition-delay: 0.5s;
+    }
+
+    .nav-links a {
+        display: block;
+        padding: 0.75rem 1rem;
+        border-radius: var(--radius-sm);
+        transition: all 0.2s ease;
+    }
+
+    /* Dark mode link hover */
+    .nav-links a:hover {
+        background: rgba(255, 255, 255, 0.05);
+        padding-left: 1.5rem;
+        /* Slight shift effect */
+        color: var(--neon-cyan);
+    }
+
+    /* Light mode specific link styling */
     [data-theme="light"] .nav-links a {
-        color: var(--text-primary) !important;
+        color: #1e293b;
+        /* Dark text for light mode */
+        font-weight: 500;
     }
 
     [data-theme="light"] .nav-links a:hover {
-        color: var(--neon-cyan) !important;
-        background: rgba(0, 0, 0, 0.05);
-    }
-
-    [data-theme="light"] .nav-links a {
-        color: #ffffff !important;
-    }
-
-    [data-theme="light"] .nav-links a:hover {
-        color: rgba(255, 255, 255, 0.8) !important;
+        color: var(--neon-cyan);
+        background: rgba(0, 0, 0, 0.03);
+        padding-left: 1.5rem;
     }
 
     .hero-stats {
