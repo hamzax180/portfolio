@@ -2308,6 +2308,33 @@ section {
         width: 18px !important;
         height: 4px !important;
     }
+
+    /* Compact Mobile Input */
+    .chat-input-container {
+        padding: 0.5rem !important;
+        background: rgba(10, 10, 15, 0.98);
+    }
+
+    .chat-mic,
+    .chat-send {
+        width: 38px !important;
+        height: 38px !important;
+        padding: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .chat-mic svg,
+    .chat-send svg {
+        width: 18px !important;
+        height: 18px !important;
+    }
+
+    .chat-mic.recording {
+        transform: scale(0.9) !important;
+        box-shadow: 0 0 10px var(--neon-magenta) !important;
+    }
 }
 
 /* === FORCE OVERRIDES FOR CHAT STATUS === */
