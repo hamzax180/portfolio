@@ -2311,8 +2311,19 @@ section {
 
     /* Compact Mobile Input */
     .chat-input-container {
-        padding: 0.5rem !important;
-        background: rgba(10, 10, 15, 0.98);
+        padding: 1rem 0.5rem !important;
+        background: #ffffff !important;
+        border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
+    }
+
+    .chat-input {
+        background: #f1f5f9 !important;
+        color: #1e293b !important;
+        border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .chat-input::placeholder {
+        color: #94a3b8 !important;
     }
 
     .chat-mic,
