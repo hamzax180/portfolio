@@ -108,7 +108,8 @@ REMEMBER: Be brief! Fast conversation!`;
     }
 
     setupAudioTriggers() {
-        ['mousedown', 'click', 'keydown', 'touchstart'].forEach(evt => {
+        // Use multiple events to catch first user interaction
+        ['mousedown', 'click', 'keydown', 'touchstart', 'touchend'].forEach(evt => {
             window.addEventListener(evt, () => {
                 this.initAudio();
                 this.unlockSpeech();
@@ -136,21 +137,51 @@ REMEMBER: Be brief! Fast conversation!`;
         }
     }
 
-    // Unlock speech synthesis (required for mobile browsers)
+    // Unlock speech synthesis (required for mobile browsers, especially iOS Safari)
     unlockSpeech() {
         if (this.speechEnabled || !this.synthesis) return;
 
         try {
-            // Create a silent utterance to unlock speech
-            const unlock = new SpeechSynthesisUtterance('');
-            unlock.volume = 0;
+            // iOS Safari requires an actual utterance with content, not empty string
+            // Using a single space character works and is inaudible
+            const unlock = new SpeechSynthesisUtterance(' ');
+            unlock.volume = 0.01; // Near-silent but not zero (iOS may ignore zero volume)
+            unlock.rate = 10; // Fastest possible to make it instant
+
+            unlock.onend = () => {
+                this.speechEnabled = true;
+                console.log('🔊 Speech synthesis unlocked (iOS compatible)');
+            };
+
+            unlock.onerror = () => {
+                // Even if error, try to mark as enabled for retry
+                console.log('🔊 Speech unlock had error, will retry on speak');
+            };
+
             this.synthesis.speak(unlock);
-            this.synthesis.cancel();
-            this.speechEnabled = true;
-            console.log('🔊 Speech synthesis unlocked');
+            // Don't cancel - let it complete naturally for iOS
+
         } catch (e) {
             console.warn('Could not unlock speech:', e);
         }
+    }
+
+    // Force unlock on direct tap (for iOS)
+    forceUnlockSpeech() {
+        if (!this.synthesis) return;
+
+        this.speechEnabled = false; // Reset to try again
+
+        const unlock = new SpeechSynthesisUtterance('.');
+        unlock.volume = 0.01;
+        unlock.rate = 10;
+
+        unlock.onend = () => {
+            this.speechEnabled = true;
+            console.log('🔊 Speech force-unlocked');
+        };
+
+        this.synthesis.speak(unlock);
     }
 
     playTechSound(name) {
@@ -514,9 +545,8 @@ REMEMBER: Be brief! Fast conversation!`;
             return;
         }
 
-        // Ensure audio and speech are unlocked on mic click
+        // Ensure audio and speech are unlocked on mic click (important for iOS)
         this.initAudio();
-        this.unlockSpeech();
 
         if (this.isRecording) {
             console.log('Hanging up: Stopping recognition and canceling speech.');
@@ -525,6 +555,10 @@ REMEMBER: Be brief! Fast conversation!`;
             if (this.synthesis) this.synthesis.cancel(); // Stop bot from talking
         } else {
             console.log('Starting call...');
+
+            // Force unlock speech on call start (iOS Safari requires this on direct tap)
+            this.forceUnlockSpeech();
+
             // Resume audio context if suspended (Chrome autoplay policy)
             if (this.audioCtx && this.audioCtx.state === 'suspended') {
                 this.audioCtx.resume();
