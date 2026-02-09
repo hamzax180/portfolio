@@ -2309,17 +2309,15 @@ section {
         height: 4px !important;
     }
 
-    /* Compact Mobile Input */
+    /* Compact Mobile Input - ABSOLUTE POSITIONING FIX */
     .chat-input-container {
         padding: 0.5rem !important;
         background: #ffffff !important;
         border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
-        display: flex !important;
-        align-items: center !important;
-        /* Force vertical alignment */
-        justify-content: space-between !important;
-        gap: 0.5rem !important;
-        height: auto !important;
+        display: block !important;
+        /* Block for absolute children */
+        position: relative !important;
+        height: 60px !important;
         min-height: 60px !important;
     }
 
@@ -2327,39 +2325,47 @@ section {
         background: #f1f5f9 !important;
         color: #1e293b !important;
         border: 1px solid rgba(0, 0, 0, 0.1) !important;
-        padding: 0 1rem !important;
-        /* Horizontal padding only */
-        height: 44px !important;
-        /* Explicit height matching buttons */
+        padding: 0 55px !important;
+        /* Space for buttons */
+        height: 48px !important;
+        /* Taller input */
         line-height: normal !important;
-        /* Reset line-height */
-        margin: 0 !important;
-        /* Reset margin */
+        margin: 6px 0 0 0 !important;
+        /* Centered visually */
         border-radius: 99px !important;
-        flex: 1 !important;
-        /* Take remaining space */
+        width: 100% !important;
         appearance: none !important;
-        /* iOS fix */
     }
 
     .chat-input::placeholder {
         color: #94a3b8 !important;
-        line-height: 44px !important;
-        /* Vertically center placeholder */
+        line-height: 48px !important;
     }
 
-    .chat-mic,
-    .chat-send {
+    .chat-mic {
+        position: absolute !important;
+        left: 10px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
         width: 44px !important;
-        /* explicit 44px */
         height: 44px !important;
-        padding: 0 !important;
-        margin: 0 !important;
+        z-index: 10 !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        flex-shrink: 0 !important;
-        /* Prevent squishing */
+    }
+
+    .chat-send {
+        position: absolute !important;
+        right: 10px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        width: 44px !important;
+        height: 44px !important;
+        z-index: 10 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
 
     .chat-mic svg,
