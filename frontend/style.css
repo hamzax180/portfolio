@@ -2314,6 +2314,10 @@ section {
         padding: 1rem 0.5rem !important;
         background: #ffffff !important;
         border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
+        display: flex !important;
+        align-items: center !important;
+        /* Fix vertical alignment */
+        gap: 0.5rem !important;
     }
 
     .chat-input {
@@ -2331,8 +2335,9 @@ section {
 
     .chat-mic,
     .chat-send {
-        width: 38px !important;
-        height: 38px !important;
+        width: 42px !important;
+        /* Resize to 42px */
+        height: 42px !important;
         padding: 0 !important;
         display: flex !important;
         align-items: center !important;
