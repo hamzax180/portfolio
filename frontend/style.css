@@ -1900,6 +1900,24 @@ section {
 }
 
 /* === Theme Toggle Button === */
+.theme-toggle-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: var(--space-sm);
+}
+
+.theme-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: color var(--transition-medium);
+}
+
+[data-theme="light"] .theme-label {
+    color: #ffffff;
+}
+
 .theme-toggle {
     background: transparent;
     border: 2px solid var(--neon-cyan);
@@ -1912,7 +1930,6 @@ section {
     width: 40px;
     height: 40px;
     transition: all var(--transition-medium);
-    margin-left: var(--space-sm);
 }
 
 .theme-toggle:hover {

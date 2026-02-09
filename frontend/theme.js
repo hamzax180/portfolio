@@ -4,11 +4,17 @@
 
 (function () {
     const themeToggle = document.getElementById('themeToggle');
+    const themeLabel = document.getElementById('themeLabel');
     const html = document.documentElement;
 
     // Check for saved theme preference or default to dark
     const savedTheme = localStorage.getItem('theme') || 'dark';
     html.setAttribute('data-theme', savedTheme);
+
+    // Update label on page load
+    if (themeLabel) {
+        themeLabel.textContent = savedTheme === 'dark' ? 'Dark' : 'Light';
+    }
 
     // Toggle theme on button click
     if (themeToggle) {
@@ -18,6 +24,11 @@
 
             html.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
+
+            // Update label
+            if (themeLabel) {
+                themeLabel.textContent = newTheme === 'dark' ? 'Dark' : 'Light';
+            }
 
             // Add a little animation feedback
             themeToggle.style.transform = 'rotate(180deg) scale(1.1)';
