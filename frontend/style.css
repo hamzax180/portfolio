@@ -2334,10 +2334,10 @@ section {
         position: absolute !important;
         top: 50% !important;
         transform: translateY(-50%) !important;
-        left: 55px !important;
-        /* Space for Mic */
-        width: calc(100% - 110px) !important;
-        /* Width minus buttons */
+        left: 65px !important;
+        /* Increased spacing */
+        width: calc(100% - 130px) !important;
+        /* Narrower width for gaps */
         margin: 0 !important;
     }
 
