@@ -1873,14 +1873,26 @@ section {
         grid-template-columns: 1fr;
     }
 
-    .chat-window {
-        width: calc(100vw - 20px);
+    /* Updated mobile/tablet chat layout */
+    #chatWindow {
+        width: 100vw;
         max-width: none;
-        right: 10px;
-        left: 10px;
-        bottom: 80px;
-        max-height: 65vh;
-        border-radius: var(--radius-md);
+        right: 0;
+        left: 0;
+        bottom: 0 !important;
+        height: 85vh !important;
+        max-height: 85vh !important;
+        border-radius: var(--radius-md) var(--radius-md) 0 0;
+        z-index: 2000;
+        position: fixed;
+        box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    #chatToggle {
+        bottom: 20px !important;
+        right: 20px !important;
+        z-index: 2001;
+        position: fixed;
     }
 
     .theme-toggle {
