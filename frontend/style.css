@@ -2407,20 +2407,34 @@ section {
     }
 
     #chatWindow {
-        width: calc(100% - 30px) !important;
-        height: 65vh !important;
+        /* FIXED: Use dvh for real mobile viewport height */
+        height: 70dvh !important;
         max-height: 600px !important;
-        bottom: 85px !important;
-        right: 15px !important;
+
+        /* FIXED: Proper positioning */
+        width: calc(100% - 30px) !important;
         left: 15px !important;
+        right: 15px !important;
+        bottom: calc(85px + env(safe-area-inset-bottom)) !important;
+        /* Account for iPhone home bar */
+
+        /* FIXED: Remove overflow masking to stop head clipping */
+        overflow: visible !important;
+
         border-radius: 20px !important;
         position: fixed !important;
         z-index: 9999 !important;
         margin: 0 !important;
         box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4) !important;
         background: rgba(10, 10, 15, 0.98);
-        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+        /* FIXED: Transform origin */
         transform-origin: bottom right;
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+        /* Layout flex column */
+        display: flex !important;
+        flex-direction: column !important;
     }
 
     [data-theme="light"] #chatWindow {
