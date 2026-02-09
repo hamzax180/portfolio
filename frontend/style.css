@@ -1791,33 +1791,51 @@ section {
 
 /* Voice Status Indicator */
 .voice-status {
-    text-align: center;
-    font-size: 0.8rem;
+    position: absolute;
+    bottom: 80px;
+    /* Floating above input */
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(10, 10, 15, 0.9);
+    border: 1px solid var(--neon-magenta);
+    border-radius: 99px;
+    padding: 8px 16px;
+    font-size: 0.85rem;
     color: var(--neon-magenta);
-    padding: 5px;
+    text-align: center;
     opacity: 0;
-    transition: opacity 0.3s ease;
-    height: 0;
-    overflow: hidden;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 10;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .voice-status.active {
     opacity: 1;
-    height: auto;
-    padding-bottom: 10px;
-    animation: pulse-text 1.5s infinite;
+    bottom: 90px;
+    /* Slight float up animation */
+    animation: pulse-border 1.5s infinite;
 }
 
-@keyframes pulse-text {
+@keyframes pulse-border {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 0, 255, 0.4);
+    }
 
-    0%,
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 0, 255, 0);
+    }
+
     100% {
-        opacity: 1;
+        box-shadow: 0 0 0 0 rgba(255, 0, 255, 0);
     }
+}
 
-    50% {
-        opacity: 0.5;
-    }
+/* Light Mode Override for Voice Status */
+[data-theme="light"] .voice-status {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .chat-input-container {
