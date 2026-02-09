@@ -63,6 +63,15 @@ REMEMBER: Be brief! Fast conversation!`;
         // Toggle chat
         this.toggle.addEventListener('click', () => this.toggleChat());
 
+        // Close button (Mobile)
+        const closeBtn = document.getElementById('chatCloseBtn');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                // If open, close it
+                if (this.isOpen) this.toggleChat();
+            });
+        }
+
         // Send message
         this.sendBtn.addEventListener('click', () => this.sendMessage());
         this.input.addEventListener('keypress', (e) => {
