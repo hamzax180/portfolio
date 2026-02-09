@@ -2451,24 +2451,63 @@ section {
         position: fixed !important;
     }
 
+    /* Mobile Close Button (Hidden by default) */
+    .mobile-close-chat {
+        display: none;
+    }
+
     #chatWindow h4 {
         color: #00f0ff !important;
         text-shadow: 0 0 5px rgba(0, 0, 0, 0.5) !important;
+        font-size: 1rem !important;
+        /* Slightly smaller for mobile */
     }
 
     .chat-header {
-        padding: 1.5rem 1rem 1rem 1rem !important;
-        /* precise-padding */
+        padding: 1rem !important;
+        /* Standard padding */
+        padding-top: 1.25rem !important;
         gap: 0.5rem !important;
+        position: relative !important;
+        display: flex !important;
+        flex-direction: row !important;
+        /* Ensure row layout for close button */
+        justify-content: space-between !important;
+        align-items: center !important;
+    }
+
+    /* Show Mobile Close Button */
+    .mobile-close-chat {
+        display: flex !important;
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        color: var(--text-primary);
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .mobile-close-chat svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* HIDE Floating Toggle when Chat is Open on Mobile */
+    .chat-widget.open #chatToggle {
+        display: none !important;
+        pointer-events: none !important;
     }
 
     .chat-avatar {
-        width: clamp(50px, 15vw, 65px) !important;
-        height: clamp(50px, 15vw, 65px) !important;
+        width: clamp(45px, 12vw, 55px) !important;
+        height: clamp(45px, 12vw, 55px) !important;
         border-width: 2px !important;
-        margin-bottom: 0.5rem !important;
-        margin-top: 0.25rem !important;
-        /* Add breathing room top */
+        margin: 0 !important;
+        /* Reset margins, let flexbox handle it */
     }
 
     .robot-eye {

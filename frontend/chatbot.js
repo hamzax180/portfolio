@@ -1,3 +1,4 @@
+```javascript
 /* ============================================
    HAMZA AL-AHDAL - AI CHATBOT ASSISTANT
    Powered by Google Gemini AI
@@ -5,13 +6,6 @@
 
 class HamzaChatbot {
     constructor() {
-        this.widget = document.getElementById('chatWidget');
-        this.toggle = document.getElementById('chatToggle');
-        this.window = document.getElementById('chatWindow');
-        this.messages = document.getElementById('chatMessages');
-        this.input = document.getElementById('chatInput');
-        this.sendBtn = document.getElementById('chatSend');
-        this.robotAvatar = document.getElementById('robotAvatar');
         this.micBtn = document.getElementById('chatMic');
         this.voiceStatus = document.getElementById('voiceStatus');
         this.statusElement = document.querySelector('.chat-status'); // Add status element selector
@@ -41,20 +35,20 @@ class HamzaChatbot {
         this.setupSpeechRecognition();
 
         // Hamza's comprehensive knowledge base for AI training
-        this.systemPrompt = `You are Hamza AI Assistant. You're smart, friendly, and chat like someone on a phone call. 
+        this.systemPrompt = `You are Hamza AI Assistant.You're smart, friendly, and chat like someone on a phone call. 
 
 ## CONVERSATION STYLE
-- Keep responses EXTREMELY SHORT (1-2 sentences max). This is a fast-paced phone call.
-- Be casual and natural. Use "Yeah", "Sure", "Nice".
+    - Keep responses EXTREMELY SHORT(1 - 2 sentences max).This is a fast - paced phone call.
+- Be casual and natural.Use "Yeah", "Sure", "Nice".
 - Refer to Hamza as "Hamza" or "he".
 - You can discuss anything, but always keep it brief.
-- If they ask for detail, give it in only 1-2 short sentences.
+- If they ask for detail, give it in only 1 - 2 short sentences.
 
 ## HAMZA'S INFO
-- Student at Altinbas University (CS, Grad 2026).
-- Skills: Python, JS, TypeScript, React, Node, AI/RAG, Docker.
-- Projects: Rihlah (AI Travel), Alhadaf (E-commerce), La Liga Hub.
-- Contact: hamza1tot@gmail.com, +90 536 429 2064.
+    - Student at Altinbas University(CS, Grad 2026).
+- Skills: Python, JS, TypeScript, React, Node, AI / RAG, Docker.
+- Projects: Rihlah(AI Travel), Alhadaf(E - commerce), La Liga Hub.
+- Contact: hamza1tot @gmail.com, +90 536 429 2064.
 
 REMEMBER: Be brief! Fast conversation!`;
 
@@ -70,7 +64,7 @@ REMEMBER: Be brief! Fast conversation!`;
         if (!this.statusElement) return;
 
         // Update text
-        this.statusElement.innerHTML = `<span class="status-dot"></span> ${text}`;
+        this.statusElement.innerHTML = `< span class="status-dot" ></span > ${ text } `;
 
         // Toggle offline class
         if (type === 'offline') {
@@ -230,6 +224,16 @@ REMEMBER: Be brief! Fast conversation!`;
         }
     }
 
+    setupMobileClose() {
+        if (this.mobileCloseBtn) {
+            this.mobileCloseBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.toggleChat();
+            });
+        }
+    }
+
     addWelcomeMessage() {
         const welcomeMsg = "Hi there! 👋 I'm Hamza's AI assistant, powered by Google Gemini. I can tell you about his skills, projects, education, or how to get in touch. You can also use the 🎤 button to speak to me! What would you like to know?";
         this.appendMessage('bot', welcomeMsg);
@@ -237,7 +241,7 @@ REMEMBER: Be brief! Fast conversation!`;
 
     appendMessage(type, content) {
         const msgDiv = document.createElement('div');
-        msgDiv.className = `chat-message ${type}`;
+        msgDiv.className = `chat - message ${ type } `;
         msgDiv.innerHTML = this.formatMessage(content);
         this.messages.appendChild(msgDiv);
         this.messages.scrollTop = this.messages.scrollHeight;
@@ -349,7 +353,7 @@ REMEMBER: Be brief! Fast conversation!`;
             this.updateStatus(statusText, 'offline');
 
             const fallbackResponse = this.generateLocalResponse(text);
-            this.appendMessage('bot', `${errorMessage}\n\n${fallbackResponse}`);
+            this.appendMessage('bot', `${ errorMessage } \n\n${ fallbackResponse } `);
 
             if (speakResponse) {
                 this.speak(errorMessage + ". " + fallbackResponse);
@@ -399,7 +403,7 @@ REMEMBER: Be brief! Fast conversation!`;
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
                 console.error('Proxy Error Response (RAW):', errorData);
-                throw new Error(`API request failed: ${response.status} - ${errorData.error || 'Unknown error'}`);
+                throw new Error(`API request failed: ${ response.status } - ${ errorData.error || 'Unknown error' } `);
             }
 
             const data = await response.json();
