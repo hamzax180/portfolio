@@ -2271,3 +2271,19 @@ section {
         position: fixed !important;
     }
 }
+
+/* === FORCE OVERRIDES FOR CHAT STATUS === */
+html body #chatWindow .chat-status {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+html body #chatWindow .status-dot {
+    background-color: #39ff14 !important;
+    box-shadow: 0 0 10px #39ff14 !important;
+}
+
+html body [data-theme="light"] #chatWindow .chat-status {
+    color: #ffffff !important;
+}
