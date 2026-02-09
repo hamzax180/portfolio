@@ -2065,7 +2065,8 @@ section {
         top: 100%;
         left: 0;
         right: 0;
-        background: linear-gradient(180deg, rgba(6, 182, 212, 0.98), rgba(59, 130, 246, 0.98));
+        background: rgba(10, 10, 15, 0.95);
+        /* Dark mode default */
         backdrop-filter: blur(20px);
         flex-direction: column;
         padding: var(--space-md);
@@ -2074,6 +2075,7 @@ section {
         opacity: 0;
         visibility: hidden;
         transition: all var(--transition-medium);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .nav-links.active {
@@ -2084,7 +2086,17 @@ section {
 
     /* Light mode: Blue dropdown menu */
     [data-theme="light"] .nav-links {
-        background: linear-gradient(135deg, #0ea5e9, #6366f1);
+        background: rgba(255, 255, 255, 0.95);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    [data-theme="light"] .nav-links a {
+        color: var(--text-primary) !important;
+    }
+
+    [data-theme="light"] .nav-links a:hover {
+        color: var(--neon-cyan) !important;
+        background: rgba(0, 0, 0, 0.05);
     }
 
     [data-theme="light"] .nav-links a {
